@@ -1,0 +1,6 @@
+﻿com.samsung.shealth.report,6311013,3
+timezone,start_date,update_time,create_time,type,is_empty,version,deviceuuid,content,pkg_name,datauuid,compressed_content
+Europe/Amsterdam,1746309600000,2025-05-15 12:53:30.108,2025-05-15 12:53:30.108,0,0,3,h6hg6DTKNp,X,com.sec.android.app.shealth,48d4dd3c-83f3-47e7-9787-893070d571f5,48d4dd3c-83f3-47e7-9787-893070d571f5.compressed_content.json,
+Europe/Amsterdam,1746914400000,2025-05-18 12:52:59.202,2025-05-18 12:52:59.202,0,0,3,h6hg6DTKNp,X,com.sec.android.app.shealth,be9c6df5-1b73-43d3-b674-59331151b6b5,be9c6df5-1b73-43d3-b674-59331151b6b5.compressed_content.json,
+Europe/Amsterdam,1747519200000,2025-05-25 12:59:15.306,2025-05-25 12:59:15.306,0,0,3,h6hg6DTKNp,X,com.sec.android.app.shealth,13c0b511-1de6-401c-8e2c-6c4d614da7b3,13c0b511-1de6-401c-8e2c-6c4d614da7b3.compressed_content.json,
+Europe/Amsterdam,1748124000000,2025-06-01 12:53:10.316,2025-06-01 12:53:10.316,0,0,3,h6hg6DTKNp,X,com.sec.android.app.shealth,6ee9eb09-c9be-4b13-9989-3123c570a5c4,6ee9eb09-c9be-4b13-9989-3123c570a5c4.compressed_content.json,

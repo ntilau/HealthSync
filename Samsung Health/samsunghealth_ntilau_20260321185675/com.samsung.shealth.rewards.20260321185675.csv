@@ -1,0 +1,134 @@
+﻿com.samsung.shealth.rewards,6311013,5
+number_of_streak,start_time,exercise_type,device_type,exercise_session_id,update_time,create_time,source_pkg_name,program_id,title,time_offset,extra_data,deviceuuid,pkg_name,controller_id,end_time,datauuid,is_visible
+,2026-02-25 00:00:00.000,,100003,,2026-03-21 17:31:20.382,2026-03-21 17:31:20.382,,,tracker_pedometer_reward_most_walking_day,UTC+0100,"{
+  ""mTarget"" : -1,
+  ""mValue"" : 11396
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-25 00:00:00.000,c2600d3e-5b0b-421e-a6f4-d0be7fe72179,0,
+,2026-02-27 00:00:00.000,,100003,,2026-03-21 17:31:20.429,2026-03-21 17:31:20.429,,,tracker_pedometer_reward_most_walking_day,UTC+0100,"{
+  ""mTarget"" : -1,
+  ""mValue"" : 13903
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-27 00:00:00.000,8a7f1609-9207-46de-901c-6e25ee11ff91,0,
+,2026-02-25 00:00:00.000,,10009,,2026-03-21 17:31:22.214,2026-03-21 17:31:20.158,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11396
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-24 23:00:00.000,1ee6edff-28e4-48ae-a573-6adf24897a5a,0,
+,2026-02-27 00:00:00.000,,10009,,2026-03-21 17:31:22.217,2026-03-21 17:31:20.170,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 13903
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-26 23:00:00.000,70b42337-c9dd-46e6-a68f-2754eeae20aa,0,
+,2026-03-02 00:00:00.000,,10009,,2026-03-21 17:31:22.220,2026-03-21 17:31:20.181,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11192
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-01 23:00:00.000,91e2dee7-08f3-4dde-8d77-b27b5b6479aa,0,
+,2026-03-03 00:00:00.000,,10009,,2026-03-21 17:31:22.223,2026-03-21 17:31:20.185,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10185
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-02 23:00:00.000,01863981-8f5f-4938-9da9-6d9406243962,0,
+,2026-03-04 00:00:00.000,,10009,,2026-03-21 17:31:22.229,2026-03-21 17:31:20.189,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10354
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-03 23:00:00.000,11e2e059-0de2-4d62-b48d-674da1905199,0,
+,2026-03-05 00:00:00.000,,10009,,2026-03-21 17:31:22.233,2026-03-21 17:31:20.197,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11640
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-04 23:00:00.000,9556e861-a41d-4e4e-9a60-5e9bc8058f90,0,
+,2026-03-15 00:00:00.000,,10009,,2026-03-21 17:31:22.253,2026-03-21 17:31:20.234,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10836
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-14 23:00:00.000,1f872e4a-8121-4403-83d1-14977a829200,0,
+,2026-03-06 00:00:00.000,,10009,,2026-03-21 17:31:22.235,2026-03-21 17:31:20.202,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10225
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-05 23:00:00.000,3d0a784d-50c1-4df3-a37e-b9caed44eafd,0,
+,2026-03-18 00:00:00.000,,10009,,2026-03-21 17:31:22.264,2026-03-21 17:31:20.257,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10402
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-17 23:00:00.000,7fe50245-4556-4c54-ad19-a77595771a25,0,
+,2026-03-07 00:00:00.000,,10009,,2026-03-21 17:31:22.238,2026-03-21 17:31:20.211,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 13230
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-06 23:00:00.000,37314a66-a6ca-4142-86bb-317b562dcb1b,0,
+,2026-03-08 00:00:00.000,,10009,,2026-03-21 17:31:22.245,2026-03-21 17:31:20.215,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11412
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-07 23:00:00.000,eec6c5c2-0ffa-450a-bdf7-135d33b4ff80,0,
+,2026-03-05 00:00:00.000,,100003,,2026-03-21 17:31:22.524,2026-03-21 17:31:20.543,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11640
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-04 23:00:00.000,91d12534-728f-405a-ab6a-1b3704a72aac,0,
+,2026-03-11 00:00:00.000,,10009,,2026-03-21 17:31:22.250,2026-03-21 17:31:20.229,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10392
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-10 23:00:00.000,bd607d05-9a9c-4294-8d03-e311ad5ab982,0,
+,2026-02-25 00:00:00.000,,100003,,2026-03-21 17:31:22.364,2026-03-21 17:31:20.379,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11396
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-24 23:00:00.000,97bd544e-354f-4a40-9ed5-7897dec7744a,0,
+,2026-03-04 00:00:00.000,,100003,,2026-03-21 17:31:22.507,2026-03-21 17:31:20.527,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10354
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-03 23:00:00.000,9633ec99-0c76-4b09-ba04-51a568510623,0,
+,2026-03-17 00:00:00.000,,10009,,2026-03-21 17:31:22.261,2026-03-21 17:31:20.248,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11067
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-16 23:00:00.000,b1ebef05-dbc8-4d38-b4c7-2589b1a7d0c2,0,
+,2026-03-07 00:00:00.000,,100003,,2026-03-21 17:31:22.568,2026-03-21 17:31:20.574,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 13230
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-06 23:00:00.000,3746aba2-a191-45e7-a793-672e4f1a3371,0,
+,2026-03-16 00:00:00.000,,10009,,2026-03-21 17:31:22.259,2026-03-21 17:31:20.243,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10280
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-15 23:00:00.000,e3009c87-2de2-46be-a8b8-7fe4980fc234,0,
+,2026-03-03 00:00:00.000,,100003,,2026-03-21 17:31:22.483,2026-03-21 17:31:20.512,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10185
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-02 23:00:00.000,3b5ebc79-04ab-4159-b567-26bbec4d9560,0,
+,2026-03-06 00:00:00.000,,100003,,2026-03-21 17:31:22.547,2026-03-21 17:31:20.559,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10225
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-05 23:00:00.000,8fde2337-4505-4df9-b078-ee8b80ede54a,0,
+,2026-02-25 00:00:00.000,,100003,,2026-03-21 17:31:22.369,2026-03-21 17:31:22.369,,,tracker_pedometer_reward_most_walking_day,UTC+0100,"{
+  ""mTarget"" : -1,
+  ""mValue"" : 11396
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-25 00:00:00.000,058b0a95-4ba2-4e7e-a444-9a947e497b21,0,
+,2026-03-09 00:00:00.000,,10009,,2026-03-21 17:31:22.247,2026-03-21 17:31:20.220,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10473
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-08 23:00:00.000,43b4d4b0-c72e-479d-950a-70d396c067d6,0,
+,2026-03-16 00:00:00.000,,100003,,2026-03-21 17:31:22.674,2026-03-21 17:31:20.698,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10280
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-15 23:00:00.000,4071e051-c010-44ee-b027-a4f99b54aadd,0,
+,2026-03-08 00:00:00.000,,100003,,2026-03-21 17:31:22.582,2026-03-21 17:31:20.591,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11412
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-07 23:00:00.000,0d862387-731b-4d1e-b674-3860097bc702,0,
+,2026-02-27 00:00:00.000,,100003,,2026-03-21 17:31:22.406,2026-03-21 17:31:20.427,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 13903
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-02-26 23:00:00.000,49aa41a7-af27-455f-9b75-2d3c0b8fc1bd,0,
+,2026-03-02 00:00:00.000,,100003,,2026-03-21 17:31:22.464,2026-03-21 17:31:20.495,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11192
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-01 23:00:00.000,d81e7161-7866-4a07-829d-d5fbf6ac2134,0,
+,2026-03-18 00:00:00.000,,100003,,2026-03-21 17:31:22.701,2026-03-21 17:31:20.733,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10402
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-17 23:00:00.000,6d580ce5-33d0-4ac8-8f68-e24c49aa8483,0,
+,2026-03-17 00:00:00.000,,100003,,2026-03-21 17:31:22.688,2026-03-21 17:31:20.717,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 11067
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-16 23:00:00.000,450b7776-a39a-4900-b158-dbec59f05dcb,0,
+,2026-03-15 00:00:00.000,,100003,,2026-03-21 17:31:22.660,2026-03-21 17:31:20.678,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10836
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-14 23:00:00.000,1e4e9ddd-92e8-43a2-a1c0-02c7a9cffa72,0,
+,2026-03-11 00:00:00.000,,100003,,2026-03-21 17:31:22.619,2026-03-21 17:31:20.633,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10392
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-10 23:00:00.000,fc2dc76f-5942-4c48-875a-a20c43aa4b29,0,
+,2026-03-09 00:00:00.000,,100003,,2026-03-21 17:31:22.595,2026-03-21 17:31:20.607,,,tracker_pedometer_reward_target_achieved,UTC+0100,"{
+  ""mTarget"" : 10000,
+  ""mValue"" : 10473
+}",GVudkr4E8Q,com.sec.android.app.shealth,tracker.pedometer,2026-03-08 23:00:00.000,4a216683-1bef-4780-a790-b269354e459b,0,
