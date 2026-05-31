@@ -4,8 +4,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-# Permissions for reading/writing activity data
-SCOPES = ['https://googleapis.com']
+# Permissions for writing activity data to Google Fit
+SCOPES = ['https://www.googleapis.com/auth/fitness.activity.write']
 
 def get_fit_service():
     flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
