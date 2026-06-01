@@ -359,7 +359,37 @@ def push_heart_points(service, upload_log, seen):
 
     daily_points = {}  # {date_key: total_points}
 
-    # From exercise data
+    # From minute-level pedometer_step_count data (most accurate)
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*",
+                                       "com.samsung.shealth.tracker.pedometer_step_count.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    start_time = row.get("com.samsung.health.step_count.start_time")
+                    speed = float(row.get("com.samsung.health.step_count.speed", 0)) if row.get("com.samsung.health.step_count.speed") else 0.0
+
+                    if not start_time or speed <= 0:
+                        continue
+                    start_dt = parse_day_time(start_time)
+                    if not start_dt:
+                        continue
+
+                    # Each row ~1 minute → 1 point moderate, 2 points vigorous
+                    if speed >= VIGOROUS_PACE_KMH:
+                        points = 2.0
+                    elif speed >= MODERATE_PACE_KMH:
+                        points = 1.0
+                    else:
+                        continue
+
+                    dk = str(start_dt.date())
+                    daily_points[dk] = daily_points.get(dk, 0) + points
+                except Exception:
+                    continue
+
+    # From exercise data (adds sessions not captured by minute-level data)
     for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.exercise.*.csv")):
         with open(file, newline="", encoding='utf-8-sig') as f:
             next(f)
@@ -382,33 +412,9 @@ def push_heart_points(service, upload_log, seen):
                     points = calc_heart_points(speed_kmh, dur_min)
 
                     dk = str(start_dt.date())
-                    daily_points[dk] = daily_points.get(dk, 0) + points
-                except Exception:
-                    continue
-
-    # From daily step counts: estimate moderate-active minutes
-    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.activity.day_summary.*.csv")):
-        with open(file, newline="", encoding='utf-8-sig') as f:
-            next(f)
-            reader = csv.DictReader(f)
-            for row in reader:
-                try:
-                    day_time_raw = row.get("day_time")
-                    dt = parse_day_time(day_time_raw)
-                    if not dt:
-                        continue
-                    dk = str(dt.date())
-                    sc = int(float(row.get("step_count", 0)))
-
-                    if sc >= 8000:
-                        active_min = 30 + (sc - 8000) / 2000 * 15
-                    elif sc >= 5000:
-                        active_min = (sc - 5000) / 3000 * 30
-                    else:
-                        active_min = 0
-
-                    if active_min > 0:
-                        daily_points[dk] = daily_points.get(dk, 0) + round(active_min * 1.0, 1)
+                    # Only add if not already covered by minute-level data
+                    if dk not in daily_points:
+                        daily_points[dk] = daily_points.get(dk, 0) + points
                 except Exception:
                     continue
 
@@ -424,7 +430,7 @@ def push_heart_points(service, upload_log, seen):
         end_ns = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
 
         push_point(service, DS["heart_points"], start_ns, end_ns,
-                   "com.google.heart_minutes", {"fpVal": points})
+                   "com.google.heart_minutes", {"fpVal": round(points, 1)})
         mark_done("heart_points", dk, upload_log, seen)
         save_upload_log(upload_log)
         count += 1
