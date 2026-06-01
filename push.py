@@ -37,15 +37,16 @@ VIGOROUS_SPEED = 7.0   # km/h — 2 heart points per minute
 #   key       data-type-name                  value-key  value-type    (numeric types: intVal or fpVal)
 
 METRICS = {
-    "steps":       ("com.google.step_count.delta",   "intVal", int),
-    "distance":    ("com.google.distance.delta",     "fpVal",  float),
-    "calories":    ("com.google.calories.expended",  "fpVal",  float),
-    "weight":      ("com.google.weight",             "fpVal",  float),
-    "height":      ("com.google.height",             "fpVal",  float),
-    "body_fat":    ("com.google.body.fat.percentage","fpVal",  float),
-    "hydration":   ("com.google.hydration",          "fpVal",  float),
-    "heart_points":("com.google.heart_minutes",      "fpVal",  float),
-    "sleep":       ("com.google.sleep.segment",      "intVal", int),
+    "steps":        ("com.google.step_count.delta",        "intVal", int),
+    "minute_steps": ("com.google.step_count.delta",        "intVal", int),
+    "distance":     ("com.google.distance.delta",          "fpVal",  float),
+    "calories":     ("com.google.calories.expended",       "fpVal",  float),
+    "weight":       ("com.google.weight",                  "fpVal",  float),
+    "height":       ("com.google.height",                  "fpVal",  float),
+    "body_fat":     ("com.google.body.fat.percentage",     "fpVal",  float),
+    "hydration":    ("com.google.hydration",               "fpVal",  float),
+    "heart_points": ("com.google.heart_minutes",           "fpVal",  float),
+    "sleep":        ("com.google.sleep.segment",           "intVal", int),
 }
 
 # derive data-source IDs
@@ -307,30 +308,139 @@ def push_sleep(service, log, seen):
             except HttpError as e:
                 print(f"  API error: {e}")
 
-# ── heart points ────────────────────────────────────────────────────
+# ── minute-level steps + heart points ────────────────────────────────
 
-def push_heart_points(service, log, seen):
-    section("Heart Points — from minute-level activity speed")
+def push_minute_steps_and_heart_points(service, log, seen):
+    """Push minute-resolution step data AND compute Heart Points in one pass.
+       Each pedometer_step_count row is a ~1-minute interval with its own
+       start/end time, step count, speed, distance, and calorie data."""
 
-    daily = {}  # {date_key: points}
+    section("Minute-Level Steps & Heart Points — pedometer_step_count")
 
-    # Primary: minute-resolution step data with speed
+    daily_points = {}    # {date_key: heart_points}
+    daily_intervals = {} # {date_key: [point_dict]}
+
     for file in csv_files("pedometer_step_count"):
         for r in iter_csv(file, {
             "com.samsung.health.step_count.start_time": "t",
-            "com.samsung.health.step_count.speed": "speed",
+            "com.samsung.health.step_count.end_time":   "et",
+            "com.samsung.health.step_count.count":       "steps",
+            "com.samsung.health.step_count.speed":       "speed",
+            "com.samsung.health.step_count.distance":    "dist",
+            "com.samsung.health.step_count.calorie":     "cal",
         }):
             try:
-                dt = parse_time(r["t"])
-                speed = float(r["speed"] or 0)
-                if not dt or speed < MODERATE_SPEED:
+                s_dt = parse_time(r["t"])
+                e_dt = parse_time(r["et"])
+                if not s_dt or not e_dt:
                     continue
-                pts = 2.0 if speed >= VIGOROUS_SPEED else 1.0
-                daily[date_key(dt)] = daily.get(date_key(dt), 0) + pts
+
+                count = int(float(r["steps"] or 0))
+                speed = float(r["speed"] or 0)
+                dist  = float(r["dist"] or 0)
+                cal   = float(r["cal"] or 0)
+
+                dk = date_key(s_dt)
+                daily_intervals.setdefault(dk, []).append({
+                    "start_ns": nano(s_dt),
+                    "end_ns":   nano(e_dt),
+                    "steps":    count,
+                    "distance": dist,
+                    "calories": cal,
+                })
+
+                # Heart Points from speed
+                if speed >= VIGOROUS_SPEED:
+                    daily_points[dk] = daily_points.get(dk, 0) + 2.0
+                elif speed >= MODERATE_SPEED:
+                    daily_points[dk] = daily_points.get(dk, 0) + 1.0
             except Exception:
                 continue
 
+    # ---- push minute-level steps, distance, calories per day ----
+
+    step_uploaded = 0
+    dist_uploaded = 0
+    cal_uploaded  = 0
+    for dk, intervals in sorted(daily_intervals.items()):
+        if skip("minute_steps", dk, log, seen):
+            continue
+
+        dt = datetime.datetime.strptime(dk, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+        day_start, day_end = day_range(dt)
+
+        # Build multi-point datasets for this day
+        for metric, val_field, dtype_key in [
+            ("steps",    "steps",    "com.google.step_count.delta"),
+            ("distance", "distance", "com.google.distance.delta"),
+            ("calories", "calories", "com.google.calories.expended"),
+        ]:
+            points = []
+            for iv in intervals:
+                v = iv[val_field]
+                if v <= 0:
+                    continue
+                val_key, _ = METRICS[metric][1], METRICS[metric][2]
+                points.append({
+                    "startTimeNanos": iv["start_ns"],
+                    "endTimeNanos":   iv["end_ns"],
+                    "dataTypeName":   dtype_key,
+                    "value":          [{val_key: val_key == "intVal" and int(v) or v}],
+                })
+
+            if not points:
+                continue
+
+            body = {
+                "dataSourceId": DS[metric],
+                "minStartTimeNs": day_start,
+                "maxEndTimeNs": day_end,
+                "point": points,
+            }
+            service.users().dataSources().datasets().patch(
+                userId='me',
+                dataSourceId=DS[metric],
+                datasetId=f"{day_start}-{day_end}",
+                body=body,
+            ).execute()
+
+            if metric == "steps":
+                step_uploaded += len(points)
+            elif metric == "distance":
+                dist_uploaded += len(points)
+            else:
+                cal_uploaded += len(points)
+
+        mark("minute_steps", dk, log, seen)
+        save_log(log)
+
+        total_steps = sum(iv["steps"] for iv in intervals)
+        total_dist  = sum(iv["distance"] for iv in intervals)
+        print(f"  minute_steps  {total_steps:>6} steps  {len(intervals):>4} pts  "
+              f"{total_dist:>8.1f} m     {dk}")
+
+    print(f"  → {step_uploaded} step + {dist_uploaded} distance + {cal_uploaded} calorie points")
+    print(f"     across {len([dk for dk in daily_intervals if not skip('minute_steps', dk, log, seen)])} new days")
+
+    # ---- push Heart Points ----
+
+    hp_uploaded = 0
+    for dk in sorted(daily_points):
+        pts = daily_points[dk]
+        if pts <= 0 or skip("heart_points", dk, log, seen):
+            continue
+        dt = datetime.datetime.strptime(dk, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+        push_point(service, "heart_points", *day_range(dt), round(pts, 1))
+        mark("heart_points", dk, log, seen)
+        save_log(log)
+        hp_uploaded += 1
+        print(f"  heart_points  {pts:>8.1f} pts    {dk}")
+
+    print(f"  → {hp_uploaded} new heart-point days")
+
     # Fallback: exercise sessions not covered by minute-level data
+    section("Heart Points — exercise fallback")
+    ex_daily = {}
     for file in csv_files("com.samsung.shealth.exercise"):
         for r in iter_csv(file, {
             "com.samsung.health.exercise.start_time": "t",
@@ -343,37 +453,34 @@ def push_heart_points(service, log, seen):
                 dist_m = float(r["dist"] or 0)
                 if not dt or dur_ms <= 0:
                     continue
-
                 dur_min = (dur_ms / 1000 if dur_ms > 100_000 else dur_ms) / 60
                 speed = (dist_m / 1000) / (dur_min / 60) if dur_min > 0 else 0
-
                 if speed >= VIGOROUS_SPEED:
                     pts = round(dur_min * 2, 1)
                 elif speed >= MODERATE_SPEED:
                     pts = round(dur_min * 1, 1)
                 else:
                     pts = 0
-
                 dk = date_key(dt)
-                if pts > 0 and dk not in daily:
-                    daily[dk] = daily.get(dk, 0) + pts
+                if pts > 0 and dk not in daily_points and not skip("heart_points", dk, log, seen):
+                    ex_daily[dk] = ex_daily.get(dk, 0) + pts
             except Exception:
                 continue
 
-    uploaded = 0
-    for dk in sorted(daily):
-        pts = daily[dk]
-        if pts <= 0 or skip("heart_points", dk, log, seen):
+    ex_up = 0
+    for dk in sorted(ex_daily):
+        pts = ex_daily[dk]
+        if pts <= 0:
             continue
-        s, e = day_range(datetime.datetime.strptime(dk, "%Y-%m-%d").replace(
-            tzinfo=datetime.timezone.utc))
-        push_point(service, "heart_points", s, e, round(pts, 1))
+        dt = datetime.datetime.strptime(dk, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+        push_point(service, "heart_points", *day_range(dt), round(pts, 1))
         mark("heart_points", dk, log, seen)
         save_log(log)
-        uploaded += 1
-        print(f"  heart_points  {pts:>8.1f} pts    {dk}")
+        ex_up += 1
+        print(f"  heart_points  {pts:>8.1f} pts    {dk}  (exercise)")
 
-    print(f"  → {uploaded} new days uploaded")
+    if ex_up:
+        print(f"  → {ex_up} exercise-fallback days")
 
 # ── main ────────────────────────────────────────────────────────────
 
@@ -388,7 +495,7 @@ def push_all():
     push_body_metrics(service, log, seen)
     push_hydration(service, log, seen)
     push_sleep(service, log, seen)
-    push_heart_points(service, log, seen)
+    push_minute_steps_and_heart_points(service, log, seen)
 
     section("Summary")
     for m in METRICS:
