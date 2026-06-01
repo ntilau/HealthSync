@@ -3,7 +3,6 @@ import sys
 import datetime
 import json
 import pickle
-import random
 from google.auth.transport.requests import Request
 from google.auth.exceptions import RefreshError
 from google.oauth2.credentials import Credentials
@@ -18,7 +17,6 @@ SCOPES = [
     'https://www.googleapis.com/auth/fitness.location.write',
     'https://www.googleapis.com/auth/fitness.body.write',
     'https://www.googleapis.com/auth/fitness.nutrition.write',
-    'https://www.googleapis.com/auth/fitness.heart_rate.write',
     'https://www.googleapis.com/auth/fitness.sleep.write',
 ]
 
@@ -38,17 +36,13 @@ DS = {
     "height":   f"raw:com.google.height:{CLIENT_PREFIX}:{STREAM}",
     "body_fat": f"raw:com.google.body.fat.percentage:{CLIENT_PREFIX}:{STREAM}",
     "hydration": f"raw:com.google.hydration:{CLIENT_PREFIX}:{STREAM}",
-    "heart_rate": f"raw:com.google.heart_rate.bpm:{CLIENT_PREFIX}:{STREAM}",
+    "heart_points": f"raw:com.google.heart_minutes:{CLIENT_PREFIX}:{STREAM}",
     "sleep":    f"raw:com.google.sleep.segment:{CLIENT_PREFIX}:{STREAM}",
 }
 
-# User profile for heart rate estimation
-USER_BIRTH_YEAR = 1985
-USER_GENDER = "M"
-USER_WEIGHT_KG = 85.0
-RESTING_HR = 65
-MAX_HR = 220 - (datetime.date.today().year - USER_BIRTH_YEAR)
-HR_RESERVE = MAX_HR - RESTING_HR
+# Heart Points: 1 pt per minute of moderate activity, 2 pts per minute of vigorous
+MODERATE_PACE_KMH = 4.0   # brisk walking threshold
+VIGOROUS_PACE_KMH = 7.0   # running threshold
 
 
 def get_fit_service():
@@ -350,51 +344,22 @@ def push_sleep(service, upload_log, seen):
 
 # ---- heart rate generation ----
 
-def estimate_hr(speed_kmh):
-    """Estimate heart rate from running/walking speed using HR reserve method."""
-    if speed_kmh < 0.5:
-        return RESTING_HR
-    elif speed_kmh < 5.0:
-        intensity = 0.25 + (speed_kmh / 5.0) * 0.25
-    elif speed_kmh < 8.0:
-        intensity = 0.50 + ((speed_kmh - 5.0) / 3.0) * 0.20
-    elif speed_kmh < 12.0:
-        intensity = 0.70 + ((speed_kmh - 8.0) / 4.0) * 0.20
+def calc_heart_points(speed_kmh, duration_min):
+    """Return Heart Points for an activity based on speed and duration."""
+    if speed_kmh >= VIGOROUS_PACE_KMH:
+        return round(duration_min * 2, 1)
+    elif speed_kmh >= MODERATE_PACE_KMH:
+        return round(duration_min * 1, 1)
     else:
-        intensity = 0.90
-
-    return round(RESTING_HR + intensity * HR_RESERVE)
+        return 0.0
 
 
-def generate_exercise_hr_readings(exercise):
-    """Generate heart rate readings at ~5min intervals during an exercise session."""
-    readings = []
-    dur_s = exercise["duration_s"]
-    dist_m = exercise["distance_m"]
-    start = exercise["start_dt"]
-    speed_kmh = (dist_m / 1000.0) / (dur_s / 3600.0) if dur_s > 0 else 0
-    base_hr = estimate_hr(speed_kmh)
+def push_heart_points(service, upload_log, seen):
+    print("\n--- Heart Points ---")
 
-    interval_s = 300  # 5 minutes
-    t = 0
-    while t < dur_s:
-        hr = base_hr + random.randint(-5, 5)
-        hr = max(40, min(220, hr))
-        ts = start + datetime.timedelta(seconds=t)
-        readings.append((ts, hr))
-        t += interval_s
+    daily_points = {}  # {date_key: total_points}
 
-    if not readings or readings[-1][0] < start + datetime.timedelta(seconds=dur_s - 60):
-        ts = start + datetime.timedelta(seconds=dur_s - 30)
-        readings.append((ts, base_hr + random.randint(-3, 3)))
-
-    return readings
-
-
-def push_heart_rate(service, upload_log, seen):
-    print("\n--- Heart Rate (generated) ---")
-    exercises = []
-
+    # From exercise data
     for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.exercise.*.csv")):
         with open(file, newline="", encoding='utf-8-sig') as f:
             next(f)
@@ -402,49 +367,26 @@ def push_heart_rate(service, upload_log, seen):
             for row in reader:
                 try:
                     start_time = row.get("com.samsung.health.exercise.start_time")
-                    end_time = row.get("com.samsung.health.exercise.end_time")
                     duration = int(row.get("com.samsung.health.exercise.duration", 0))
                     distance = float(row.get("com.samsung.health.exercise.distance", 0)) if row.get("com.samsung.health.exercise.distance") else 0.0
 
                     if not start_time or duration <= 0:
                         continue
-
                     start_dt = parse_day_time(start_time)
                     if not start_dt:
                         continue
 
-                    exercises.append({
-                        "start_dt": start_dt,
-                        "duration_s": duration / 1000.0 if duration > 100000 else duration,
-                        "distance_m": distance,
-                    })
+                    dur_s = duration / 1000.0 if duration > 100000 else duration
+                    dur_min = dur_s / 60.0
+                    speed_kmh = (distance / 1000.0) / (dur_s / 3600.0) if dur_s > 0 else 0
+                    points = calc_heart_points(speed_kmh, dur_min)
+
+                    dk = str(start_dt.date())
+                    daily_points[dk] = daily_points.get(dk, 0) + points
                 except Exception:
                     continue
 
-    if not exercises:
-        print("  No exercise data found.")
-        return
-
-    count = 0
-    for ex in exercises:
-        dk = str(ex["start_dt"].date())
-        if logged("heart_rate", dk, upload_log, seen):
-            continue
-
-        readings = generate_exercise_hr_readings(ex)
-        for ts, hr in readings:
-            ns = int(ts.timestamp() * 1e9)
-            push_point(service, DS["heart_rate"], ns, ns,
-                       "com.google.heart_rate.bpm", {"fpVal": float(hr)})
-            count += 1
-
-        mark_done("heart_rate", dk, upload_log, seen)
-        save_upload_log(upload_log)
-
-    print(f"  Generated {count} HR readings from {len(exercises)} exercises.")
-
-    # Add resting HR readings on days with step data but no exercise
-    resting_count = 0
+    # From daily step counts: estimate moderate-active minutes
     for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.activity.day_summary.*.csv")):
         with open(file, newline="", encoding='utf-8-sig') as f:
             next(f)
@@ -456,26 +398,39 @@ def push_heart_rate(service, upload_log, seen):
                     if not dt:
                         continue
                     dk = str(dt.date())
-                    if logged("heart_rate", dk, upload_log, seen):
-                        continue
                     sc = int(float(row.get("step_count", 0)))
-                    if sc < 100:
-                        continue
 
-                    morning = dt.replace(hour=8, minute=0, second=0)
-                    evening = dt.replace(hour=20, minute=0, second=0)
-                    for ts in (morning, evening):
-                        resting = RESTING_HR + random.randint(-3, 3)
-                        ns = int(ts.timestamp() * 1e9)
-                        push_point(service, DS["heart_rate"], ns, ns,
-                                   "com.google.heart_rate.bpm", {"fpVal": float(resting)})
-                        resting_count += 1
-                    mark_done("heart_rate", dk, upload_log, seen)
-                    save_upload_log(upload_log)
+                    if sc >= 8000:
+                        active_min = 30 + (sc - 8000) / 2000 * 15
+                    elif sc >= 5000:
+                        active_min = (sc - 5000) / 3000 * 30
+                    else:
+                        active_min = 0
+
+                    if active_min > 0:
+                        daily_points[dk] = daily_points.get(dk, 0) + round(active_min * 1.0, 1)
                 except Exception:
                     continue
 
-    print(f"  Generated {resting_count} resting HR readings for non-exercise days.")
+    count = 0
+    for dk, points in sorted(daily_points.items()):
+        if logged("heart_points", dk, upload_log, seen):
+            continue
+        if points <= 0:
+            continue
+
+        dt = datetime.datetime.strptime(dk, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+        start_ns = int(dt.timestamp() * 1e9)
+        end_ns = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
+
+        push_point(service, DS["heart_points"], start_ns, end_ns,
+                   "com.google.heart_minutes", {"fpVal": points})
+        mark_done("heart_points", dk, upload_log, seen)
+        save_upload_log(upload_log)
+        count += 1
+        print(f"  Heart Points: {points:>5.1f}        {dk}")
+
+    print(f"  Uploaded {count} days of Heart Points.")
 
 
 # ---- orchestration ----
@@ -489,7 +444,7 @@ def push_all():
     push_body_metrics(service, upload_log, seen)
     push_hydration(service, upload_log, seen)
     push_sleep(service, upload_log, seen)
-    push_heart_rate(service, upload_log, seen)
+    push_heart_points(service, upload_log, seen)
 
     print("\nDone.")
 

@@ -14,7 +14,6 @@ SCOPES = [
     'https://www.googleapis.com/auth/fitness.location.read',
     'https://www.googleapis.com/auth/fitness.body.read',
     'https://www.googleapis.com/auth/fitness.nutrition.read',
-    'https://www.googleapis.com/auth/fitness.heart_rate.read',
     'https://www.googleapis.com/auth/fitness.sleep.read',
 ]
 
@@ -143,13 +142,13 @@ def fetch_sleep(service, start_date, end_date):
     return sessions
 
 
-def fetch_heart_rate(service, start_date, end_date):
-    """Return daily avg/max/min HR for range."""
+def fetch_heart_points(service, start_date, end_date):
+    """Return daily Heart Points for range."""
     start_dt = datetime.datetime.combine(start_date, datetime.time.min, tzinfo=datetime.timezone.utc)
     end_dt = datetime.datetime.combine(end_date, datetime.time.max, tzinfo=datetime.timezone.utc)
 
     body = {
-        "aggregateBy": [{"dataTypeName": "com.google.heart_rate.bpm"}],
+        "aggregateBy": [{"dataTypeName": "com.google.heart_minutes"}],
         "bucketByTime": {"durationMillis": 86400000},
         "startTimeMillis": int(start_dt.timestamp() * 1000),
         "endTimeMillis": int(end_dt.timestamp() * 1000),
@@ -161,25 +160,21 @@ def fetch_heart_rate(service, start_date, end_date):
         for bucket in response.get("bucket", []):
             start_ms = int(bucket["startTimeMillis"])
             date_str = datetime.datetime.fromtimestamp(start_ms / 1000, tz=datetime.timezone.utc).strftime("%Y-%m-%d")
-            values = []
+            points = 0.0
             for ds in bucket.get("dataset", []):
                 for point in ds.get("point", []):
                     for val in point.get("value", []):
                         if "fpVal" in val:
-                            values.append(val["fpVal"])
-            if values:
-                results[date_str] = {
-                    "min_hr": min(values),
-                    "max_hr": max(values),
-                    "avg_hr": sum(values) / len(values),
-                }
+                            points += val["fpVal"]
+            if points > 0:
+                results[date_str] = points
     except Exception:
         pass
     return results
 
 
-def print_report(daily, body, sleep_data, hr_data):
-    print(f"{'Date':>12}  {'Steps':>10}  {'Dist(km)':>9}  {'Cal(kcal)':>10}  {'HR(avg/max)':>13}  {'Sleep':>6}")
+def print_report(daily, body, sleep_data, hp_data):
+    print(f"{'Date':>12}  {'Steps':>10}  {'Dist(km)':>9}  {'Cal(kcal)':>10}  {'HeartPts':>9}  {'Sleep':>6}")
     print("-" * 72)
 
     total_steps = 0
@@ -197,10 +192,8 @@ def print_report(daily, body, sleep_data, hr_data):
         total_dist += dist_km
         total_cal += cal
 
-        hr = hr_data.get(date_str, {})
-        hr_str = ""
-        if hr:
-            hr_str = f"{hr['avg_hr']:.0f}/{hr['max_hr']:.0f}"
+        hp = hp_data.get(date_str, 0)
+        hp_str = f"{hp:>8.1f}" if hp > 0 else "       -"
 
         sleep_str = ""
         for s in sleep_data:
@@ -210,10 +203,9 @@ def print_report(daily, body, sleep_data, hr_data):
         steps_s = f"{steps:>10,}" if steps else "         -"
         dist_s = f"{dist_km:>8.2f}" if dist_km > 0 else "       -"
         cal_s = f"{cal:>9.0f}" if cal > 0 else "        -"
-        hr_s = f"{hr_str:>13}" if hr_str else "            -"
         sleep_s = f"{sleep_str:>6}" if sleep_str else "     -"
 
-        print(f"{date_str:>12}  {steps_s}  {dist_s}  {cal_s}  {hr_s}  {sleep_s}")
+        print(f"{date_str:>12}  {steps_s}  {dist_s}  {cal_s}  {hp_str}  {sleep_s}")
 
     print("-" * 72)
     print(f"{'TOTAL':>12}  {total_steps:>10,}  {total_dist:>8.2f}  {total_cal:>9.0f}")
@@ -250,8 +242,8 @@ if __name__ == "__main__":
         daily = fetch_daily_metrics(service, start, end)
         body = fetch_body_metrics(service, start, end)
         sleep_data = fetch_sleep(service, start, end)
-        hr_data = fetch_heart_rate(service, start, end)
-        print_report(daily, body, sleep_data, hr_data)
+        hp_data = fetch_heart_points(service, start, end)
+        print_report(daily, body, sleep_data, hp_data)
     except HttpError as e:
         if e.resp.status == 403:
             sys.exit(
