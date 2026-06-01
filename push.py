@@ -16,6 +16,12 @@ SCOPES = ['https://www.googleapis.com/auth/fitness.activity.write']
 TOKEN_PATH = os.path.join(os.path.dirname(__file__), 'token.pickle')
 UPLOAD_LOG_PATH = os.path.join(os.path.dirname(__file__), 'uploaded_dates.json')
 
+DATA_SOURCE_STEPS = "raw:com.google.step_count.delta:362088348000:samsung_health_import"
+DATA_SOURCE_CALORIES = "raw:com.google.calories.expended:362088348000:samsung_health_import"
+
+SAMSUNG_HEALTH_DIR = os.path.join(os.path.dirname(__file__), "Samsung_Health")
+
+
 def get_fit_service():
     creds = None
     if os.path.exists(TOKEN_PATH):
@@ -49,19 +55,29 @@ def get_fit_service():
     return build('fitness', 'v1', credentials=creds)
 
 
-DATA_SOURCE_ID = "raw:com.google.step_count.delta:362088348000:samsung_health_import"
+def load_upload_log():
+    if os.path.exists(UPLOAD_LOG_PATH):
+        with open(UPLOAD_LOG_PATH) as f:
+            data = json.load(f)
+    else:
+        return {}
+
+    if isinstance(data, list):
+        return {"steps": set(data), "calories": set()}
+
+    return {metric: set(dates) for metric, dates in data.items()}
 
 
-SAMSUNG_HEALTH_DIR = os.path.join(os.path.dirname(__file__), "Samsung_Health")
+def save_upload_log(upload_log):
+    with open(UPLOAD_LOG_PATH, 'w') as f:
+        json.dump({m: sorted(ds) for m, ds in upload_log.items()}, f)
 
 
 def parse_day_time(value):
-    """Parse a day_time value which may be epoch ms or a datetime string."""
     if not value:
         return None
     value = value.strip().rstrip('.')
     try:
-        # epoch milliseconds (e.g. 1746921600000)
         ms = int(value)
         return datetime.datetime.fromtimestamp(ms / 1000, tz=datetime.timezone.utc)
     except ValueError:
@@ -74,64 +90,68 @@ def parse_day_time(value):
         return None
 
 
-def load_upload_log():
-    """Return a set of date strings that have already been uploaded."""
-    if os.path.exists(UPLOAD_LOG_PATH):
-        with open(UPLOAD_LOG_PATH) as f:
-            return set(json.load(f))
-    return set()
+def push_point(service, data_source_id, start_ns, end_ns, data_type_name, value):
+    data_set = {
+        "dataSourceId": data_source_id,
+        "minStartTimeNs": start_ns,
+        "maxEndTimeNs": end_ns,
+        "point": [{
+            "startTimeNanos": start_ns,
+            "endTimeNanos": end_ns,
+            "dataTypeName": data_type_name,
+            "value": [value]
+        }]
+    }
+    service.users().dataSources().datasets().patch(
+        userId='me',
+        dataSourceId=data_source_id,
+        datasetId=f"{start_ns}-{end_ns}",
+        body=data_set
+    ).execute()
 
 
-def save_upload_log(uploaded):
-    with open(UPLOAD_LOG_PATH, 'w') as f:
-        json.dump(sorted(uploaded), f)
-
-
-def upload_file(service, file, seen_dates, upload_log):
+def upload_file(service, file, seen, upload_log):
     with open(file, newline="", encoding='utf-8-sig') as f:
-        next(f)  # skip metadata row (table_name, version, field_count)
+        next(f)  # skip metadata row
         reader = csv.DictReader(f)
         for row in reader:
             try:
                 step_count = int(float(row.get("step_count", 0)))
+                calorie = float(row.get("calorie", 0)) if row.get("calorie") else 0.0
                 day_time_raw = row.get("day_time")
-                if step_count <= 0:
+
+                if step_count <= 0 and calorie <= 0.0:
                     continue
+
                 dt = parse_day_time(day_time_raw)
                 if not dt:
                     continue
 
                 date_key = str(dt.date())
-                if date_key in upload_log:
-                    continue
-                if date_key in seen_dates:
-                    continue
-                seen_dates.add(date_key)
+                start_ns = int(dt.timestamp() * 1e9)
+                end_ns = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
 
-                start = int(dt.timestamp() * 1e9)
-                end = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
+                upload_log.setdefault("steps", set())
+                upload_log.setdefault("calories", set())
+                seen.setdefault("steps", set())
+                seen.setdefault("calories", set())
 
-                data_set = {
-                    "dataSourceId": DATA_SOURCE_ID,
-                    "minStartTimeNs": start,
-                    "maxEndTimeNs": end,
-                    "point": [{
-                        "startTimeNanos": start,
-                        "endTimeNanos": end,
-                        "dataTypeName": "com.google.step_count.delta",
-                        "value": [{"intVal": step_count}]
-                    }]
-                }
-                dataset_id = f"{start}-{end}"
-                service.users().dataSources().datasets().patch(
-                    userId='me',
-                    dataSourceId=DATA_SOURCE_ID,
-                    datasetId=dataset_id,
-                    body=data_set
-                ).execute()
-                upload_log.add(date_key)
-                save_upload_log(upload_log)
-                print(f"Uploaded {step_count} steps for {date_key} from {os.path.basename(file)}")
+                if step_count > 0 and date_key not in upload_log["steps"] and date_key not in seen["steps"]:
+                    push_point(service, DATA_SOURCE_STEPS, start_ns, end_ns,
+                               "com.google.step_count.delta", {"intVal": step_count})
+                    upload_log["steps"].add(date_key)
+                    seen["steps"].add(date_key)
+                    save_upload_log(upload_log)
+                    print(f"Steps:   {step_count:>6}        {date_key}")
+
+                if calorie > 0.0 and date_key not in upload_log["calories"] and date_key not in seen["calories"]:
+                    push_point(service, DATA_SOURCE_CALORIES, start_ns, end_ns,
+                               "com.google.calories.expended", {"fpVal": calorie})
+                    upload_log["calories"].add(date_key)
+                    seen["calories"].add(date_key)
+                    save_upload_log(upload_log)
+                    print(f"Calories:{calorie:>9.1f} kcal  {date_key}")
+
             except HttpError as e:
                 if e.resp.status == 403:
                     sys.exit(
@@ -155,11 +175,11 @@ def upload_all_day_summaries(service, samsung_health_dir=SAMSUNG_HEALTH_DIR):
     for pat in patterns:
         files.extend(glob.glob(os.path.join(samsung_health_dir, "*", pat)))
 
-    print(f"Found {len(files)} step-count CSVs.")
+    print(f"Found {len(files)} CSVs.")
     upload_log = load_upload_log()
-    seen_dates = set()
+    seen = {}
     for file in files:
-        upload_file(service, file, seen_dates, upload_log)
+        upload_file(service, file, seen, upload_log)
 
 
 if __name__ == "__main__":

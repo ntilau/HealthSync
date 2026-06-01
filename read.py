@@ -46,13 +46,16 @@ def get_fit_service():
     return build('fitness', 'v1', credentials=creds)
 
 
-def fetch_daily_steps(service, start_date, end_date):
-    """Return a dict of {date_str: step_count} for the given date range."""
+def fetch_daily_metrics(service, start_date, end_date):
+    """Return {date_str: {steps: int, calories: float}} for the date range."""
     start_dt = datetime.datetime.combine(start_date, datetime.time.min, tzinfo=datetime.timezone.utc)
     end_dt = datetime.datetime.combine(end_date, datetime.time.max, tzinfo=datetime.timezone.utc)
 
     body = {
-        "aggregateBy": [{"dataTypeName": "com.google.step_count.delta"}],
+        "aggregateBy": [
+            {"dataTypeName": "com.google.step_count.delta"},
+            {"dataTypeName": "com.google.calories.expended"},
+        ],
         "bucketByTime": {"durationMillis": 86400000},
         "startTimeMillis": int(start_dt.timestamp() * 1000),
         "endTimeMillis": int(end_dt.timestamp() * 1000),
@@ -66,36 +69,43 @@ def fetch_daily_steps(service, start_date, end_date):
         date_str = datetime.datetime.fromtimestamp(
             start_ms / 1000, tz=datetime.timezone.utc
         ).strftime("%Y-%m-%d")
-        steps = 0
+        entry = results.setdefault(date_str, {"steps": 0, "calories": 0.0})
         for ds in bucket.get("dataset", []):
             for point in ds.get("point", []):
                 for val in point.get("value", []):
-                    steps += int(val.get("intVal", 0))
-        results[date_str] = results.get(date_str, 0) + steps
+                    if "intVal" in val:
+                        entry["steps"] += val["intVal"]
+                    if "fpVal" in val:
+                        entry["calories"] += val["fpVal"]
 
     return results
 
 
-def print_daily_steps(results):
+def print_daily_metrics(results):
     if not results:
-        print("No step data found.")
+        print("No data found.")
         return
 
-    total = 0
-    print(f"{'Date':>12}  {'Steps':>10}")
-    print("-" * 25)
+    total_steps = 0
+    total_cal = 0.0
+    print(f"{'Date':>12}  {'Steps':>10}  {'Calories (kcal)':>16}")
+    print("-" * 42)
     for date_str in sorted(results):
-        steps = results[date_str]
-        total += steps
-        print(f"{date_str:>12}  {steps:>10,}")
-    print("-" * 25)
-    print(f"{'TOTAL':>12}  {total:>10,}")
+        entry = results[date_str]
+        steps = entry["steps"]
+        cal = entry["calories"]
+        total_steps += steps
+        total_cal += cal
+        steps_str = f"{steps:>10,}" if steps else "         -"
+        cal_str = f"{cal:>15.1f}" if cal > 0 else "             -"
+        print(f"{date_str:>12}  {steps_str}  {cal_str}")
+    print("-" * 42)
+    print(f"{'TOTAL':>12}  {total_steps:>10,}  {total_cal:>15.1f}")
 
 
 if __name__ == "__main__":
     service = get_fit_service()
 
-    # Default to last 30 days
     end = datetime.date.today()
     start = end - datetime.timedelta(days=30)
 
@@ -105,10 +115,10 @@ if __name__ == "__main__":
         start = datetime.date.fromisoformat(sys.argv[1])
         end = datetime.date.fromisoformat(sys.argv[2])
 
-    print(f"Fetching step counts from {start} to {end}...")
+    print(f"Fetching activity data from {start} to {end}...")
     try:
-        results = fetch_daily_steps(service, start, end)
-        print_daily_steps(results)
+        results = fetch_daily_metrics(service, start, end)
+        print_daily_metrics(results)
     except HttpError as e:
         if e.resp.status == 403:
             sys.exit(
