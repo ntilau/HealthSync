@@ -1,0 +1,121 @@
+import os
+import sys
+import datetime
+import pickle
+from google.auth.transport.requests import Request
+from google.auth.exceptions import RefreshError
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+SCOPES = ['https://www.googleapis.com/auth/fitness.activity.read']
+TOKEN_PATH = os.path.join(os.path.dirname(__file__), 'token_read.pickle')
+
+
+def get_fit_service():
+    creds = None
+    if os.path.exists(TOKEN_PATH):
+        with open(TOKEN_PATH, 'rb') as token:
+            creds = pickle.load(token)
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            try:
+                creds.refresh(Request())
+            except RefreshError:
+                creds = None
+        if not creds:
+            try:
+                creds_path = os.path.join(os.path.dirname(__file__), 'credentials.json')
+                flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
+                creds = flow.run_local_server(port=0)
+            except RefreshError as e:
+                sys.exit(
+                    f"\nOAuth failed: {e}\n\n"
+                    "Your Google Cloud project is likely in testing mode and your account\n"
+                    "has not been added as a test user. To fix this:\n\n"
+                    "  1. Go to https://console.cloud.google.com/apis/credentials/consent\n"
+                    "  2. Select your project\n"
+                    "  3. Under 'Test users', click 'Add Users' and add your Google account\n"
+                    "  4. Save and re-run this script\n"
+                )
+        with open(TOKEN_PATH, 'wb') as token:
+            pickle.dump(creds, token)
+
+    return build('fitness', 'v1', credentials=creds)
+
+
+def fetch_daily_steps(service, start_date, end_date):
+    """Return a dict of {date_str: step_count} for the given date range."""
+    start_dt = datetime.datetime.combine(start_date, datetime.time.min, tzinfo=datetime.timezone.utc)
+    end_dt = datetime.datetime.combine(end_date, datetime.time.max, tzinfo=datetime.timezone.utc)
+
+    body = {
+        "aggregateBy": [{"dataTypeName": "com.google.step_count.delta"}],
+        "bucketByTime": {"durationMillis": 86400000},
+        "startTimeMillis": int(start_dt.timestamp() * 1000),
+        "endTimeMillis": int(end_dt.timestamp() * 1000),
+    }
+
+    results = {}
+    response = service.users().dataset().aggregate(userId="me", body=body).execute()
+
+    for bucket in response.get("bucket", []):
+        start_ms = int(bucket["startTimeMillis"])
+        date_str = datetime.datetime.fromtimestamp(
+            start_ms / 1000, tz=datetime.timezone.utc
+        ).strftime("%Y-%m-%d")
+        steps = 0
+        for ds in bucket.get("dataset", []):
+            for point in ds.get("point", []):
+                for val in point.get("value", []):
+                    steps += int(val.get("intVal", 0))
+        results[date_str] = results.get(date_str, 0) + steps
+
+    return results
+
+
+def print_daily_steps(results):
+    if not results:
+        print("No step data found.")
+        return
+
+    total = 0
+    print(f"{'Date':>12}  {'Steps':>10}")
+    print("-" * 25)
+    for date_str in sorted(results):
+        steps = results[date_str]
+        total += steps
+        print(f"{date_str:>12}  {steps:>10,}")
+    print("-" * 25)
+    print(f"{'TOTAL':>12}  {total:>10,}")
+
+
+if __name__ == "__main__":
+    service = get_fit_service()
+
+    # Default to last 30 days
+    end = datetime.date.today()
+    start = end - datetime.timedelta(days=30)
+
+    if len(sys.argv) == 2:
+        start = datetime.date.fromisoformat(sys.argv[1])
+    elif len(sys.argv) >= 3:
+        start = datetime.date.fromisoformat(sys.argv[1])
+        end = datetime.date.fromisoformat(sys.argv[2])
+
+    print(f"Fetching step counts from {start} to {end}...")
+    try:
+        results = fetch_daily_steps(service, start, end)
+        print_daily_steps(results)
+    except HttpError as e:
+        if e.resp.status == 403:
+            sys.exit(
+                f"\nAPI returned 403: {e}\n\n"
+                "The Fitness API may not be enabled, or your account lacks access.\n"
+                "Check:\n"
+                "  1. https://console.cloud.google.com/apis/library/fitness.googleapis.com\n"
+                "  2. Ensure your account is a test user on the OAuth consent screen\n"
+            )
+        print(f"API error: {e}")
