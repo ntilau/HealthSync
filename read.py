@@ -9,7 +9,10 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-SCOPES = ['https://www.googleapis.com/auth/fitness.activity.read']
+SCOPES = [
+    'https://www.googleapis.com/auth/fitness.activity.read',
+    'https://www.googleapis.com/auth/fitness.location.read',
+]
 TOKEN_PATH = os.path.join(os.path.dirname(__file__), 'token_read.pickle')
 
 
@@ -47,13 +50,14 @@ def get_fit_service():
 
 
 def fetch_daily_metrics(service, start_date, end_date):
-    """Return {date_str: {steps: int, calories: float}} for the date range."""
+    """Return {date_str: {steps: int, distance_m: float, calories: float}}."""
     start_dt = datetime.datetime.combine(start_date, datetime.time.min, tzinfo=datetime.timezone.utc)
     end_dt = datetime.datetime.combine(end_date, datetime.time.max, tzinfo=datetime.timezone.utc)
 
     body = {
         "aggregateBy": [
             {"dataTypeName": "com.google.step_count.delta"},
+            {"dataTypeName": "com.google.distance.delta"},
             {"dataTypeName": "com.google.calories.expended"},
         ],
         "bucketByTime": {"durationMillis": 86400000},
@@ -69,14 +73,18 @@ def fetch_daily_metrics(service, start_date, end_date):
         date_str = datetime.datetime.fromtimestamp(
             start_ms / 1000, tz=datetime.timezone.utc
         ).strftime("%Y-%m-%d")
-        entry = results.setdefault(date_str, {"steps": 0, "calories": 0.0})
+        entry = results.setdefault(date_str, {"steps": 0, "distance_m": 0.0, "calories": 0.0})
         for ds in bucket.get("dataset", []):
+            ds_id = ds.get("dataSourceId", "")
             for point in ds.get("point", []):
                 for val in point.get("value", []):
                     if "intVal" in val:
                         entry["steps"] += val["intVal"]
-                    if "fpVal" in val:
-                        entry["calories"] += val["fpVal"]
+                    elif "fpVal" in val:
+                        if "distance" in ds_id:
+                            entry["distance_m"] += val["fpVal"]
+                        elif "calories" in ds_id:
+                            entry["calories"] += val["fpVal"]
 
     return results
 
@@ -87,20 +95,24 @@ def print_daily_metrics(results):
         return
 
     total_steps = 0
+    total_dist = 0.0
     total_cal = 0.0
-    print(f"{'Date':>12}  {'Steps':>10}  {'Calories (kcal)':>16}")
-    print("-" * 42)
+    print(f"{'Date':>12}  {'Steps':>10}  {'Dist (km)':>10}  {'Cal (kcal)':>12}")
+    print("-" * 50)
     for date_str in sorted(results):
         entry = results[date_str]
         steps = entry["steps"]
+        dist_km = entry["distance_m"] / 1000.0
         cal = entry["calories"]
         total_steps += steps
+        total_dist += dist_km
         total_cal += cal
         steps_str = f"{steps:>10,}" if steps else "         -"
-        cal_str = f"{cal:>15.1f}" if cal > 0 else "             -"
-        print(f"{date_str:>12}  {steps_str}  {cal_str}")
-    print("-" * 42)
-    print(f"{'TOTAL':>12}  {total_steps:>10,}  {total_cal:>15.1f}")
+        dist_str = f"{dist_km:>9.2f}" if dist_km > 0 else "        -"
+        cal_str = f"{cal:>11.1f}" if cal > 0 else "          -"
+        print(f"{date_str:>12}  {steps_str}   {dist_str}  {cal_str}")
+    print("-" * 50)
+    print(f"{'TOTAL':>12}  {total_steps:>10,}  {total_dist:>9.2f}  {total_cal:>11.1f}")
 
 
 if __name__ == "__main__":

@@ -12,11 +12,15 @@ from googleapiclient.errors import HttpError
 import csv
 import glob
 
-SCOPES = ['https://www.googleapis.com/auth/fitness.activity.write']
+SCOPES = [
+    'https://www.googleapis.com/auth/fitness.activity.write',
+    'https://www.googleapis.com/auth/fitness.location.write',
+]
 TOKEN_PATH = os.path.join(os.path.dirname(__file__), 'token.pickle')
 UPLOAD_LOG_PATH = os.path.join(os.path.dirname(__file__), 'uploaded_dates.json')
 
 DATA_SOURCE_STEPS = "raw:com.google.step_count.delta:362088348000:samsung_health_import"
+DATA_SOURCE_DISTANCE = "raw:com.google.distance.delta:362088348000:samsung_health_import"
 DATA_SOURCE_CALORIES = "raw:com.google.calories.expended:362088348000:samsung_health_import"
 
 SAMSUNG_HEALTH_DIR = os.path.join(os.path.dirname(__file__), "Samsung_Health")
@@ -63,7 +67,7 @@ def load_upload_log():
         return {}
 
     if isinstance(data, list):
-        return {"steps": set(data), "calories": set()}
+        return {"steps": set(data), "calories": set(), "distance": set()}
 
     return {metric: set(dates) for metric, dates in data.items()}
 
@@ -117,10 +121,11 @@ def upload_file(service, file, seen, upload_log):
         for row in reader:
             try:
                 step_count = int(float(row.get("step_count", 0)))
+                distance = float(row.get("distance", 0)) if row.get("distance") else 0.0
                 calorie = float(row.get("calorie", 0)) if row.get("calorie") else 0.0
                 day_time_raw = row.get("day_time")
 
-                if step_count <= 0 and calorie <= 0.0:
+                if step_count <= 0 and distance <= 0.0 and calorie <= 0.0:
                     continue
 
                 dt = parse_day_time(day_time_raw)
@@ -131,10 +136,9 @@ def upload_file(service, file, seen, upload_log):
                 start_ns = int(dt.timestamp() * 1e9)
                 end_ns = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
 
-                upload_log.setdefault("steps", set())
-                upload_log.setdefault("calories", set())
-                seen.setdefault("steps", set())
-                seen.setdefault("calories", set())
+                for metric in ("steps", "distance", "calories"):
+                    upload_log.setdefault(metric, set())
+                    seen.setdefault(metric, set())
 
                 if step_count > 0 and date_key not in upload_log["steps"] and date_key not in seen["steps"]:
                     push_point(service, DATA_SOURCE_STEPS, start_ns, end_ns,
@@ -142,7 +146,15 @@ def upload_file(service, file, seen, upload_log):
                     upload_log["steps"].add(date_key)
                     seen["steps"].add(date_key)
                     save_upload_log(upload_log)
-                    print(f"Steps:   {step_count:>6}        {date_key}")
+                    print(f"Steps:   {step_count:>6}         {date_key}")
+
+                if distance > 0.0 and date_key not in upload_log["distance"] and date_key not in seen["distance"]:
+                    push_point(service, DATA_SOURCE_DISTANCE, start_ns, end_ns,
+                               "com.google.distance.delta", {"fpVal": distance})
+                    upload_log["distance"].add(date_key)
+                    seen["distance"].add(date_key)
+                    save_upload_log(upload_log)
+                    print(f"Distance:{distance:>9.1f} m      {date_key}")
 
                 if calorie > 0.0 and date_key not in upload_log["calories"] and date_key not in seen["calories"]:
                     push_point(service, DATA_SOURCE_CALORIES, start_ns, end_ns,
@@ -150,7 +162,7 @@ def upload_file(service, file, seen, upload_log):
                     upload_log["calories"].add(date_key)
                     seen["calories"].add(date_key)
                     save_upload_log(upload_log)
-                    print(f"Calories:{calorie:>9.1f} kcal  {date_key}")
+                    print(f"Calories:{calorie:>9.1f} kcal   {date_key}")
 
             except HttpError as e:
                 if e.resp.status == 403:
