@@ -3,6 +3,7 @@ import sys
 import datetime
 import json
 import pickle
+import random
 from google.auth.transport.requests import Request
 from google.auth.exceptions import RefreshError
 from google.oauth2.credentials import Credentials
@@ -15,15 +16,39 @@ import glob
 SCOPES = [
     'https://www.googleapis.com/auth/fitness.activity.write',
     'https://www.googleapis.com/auth/fitness.location.write',
+    'https://www.googleapis.com/auth/fitness.body.write',
+    'https://www.googleapis.com/auth/fitness.nutrition.write',
+    'https://www.googleapis.com/auth/fitness.heart_rate.write',
+    'https://www.googleapis.com/auth/fitness.sleep.write',
 ]
+
 TOKEN_PATH = os.path.join(os.path.dirname(__file__), 'token.pickle')
 UPLOAD_LOG_PATH = os.path.join(os.path.dirname(__file__), 'uploaded_dates.json')
+BASE_DIR = os.path.dirname(__file__)
+SAMSUNG_HEALTH_DIR = os.path.join(BASE_DIR, "Samsung_Health")
 
-DATA_SOURCE_STEPS = "raw:com.google.step_count.delta:362088348000:samsung_health_import"
-DATA_SOURCE_DISTANCE = "raw:com.google.distance.delta:362088348000:samsung_health_import"
-DATA_SOURCE_CALORIES = "raw:com.google.calories.expended:362088348000:samsung_health_import"
+# Data source IDs — all share the OAuth client prefix from credentials.json
+CLIENT_PREFIX = "362088348000"
+STREAM = "samsung_health_import"
+DS = {
+    "steps":    f"raw:com.google.step_count.delta:{CLIENT_PREFIX}:{STREAM}",
+    "distance": f"raw:com.google.distance.delta:{CLIENT_PREFIX}:{STREAM}",
+    "calories": f"raw:com.google.calories.expended:{CLIENT_PREFIX}:{STREAM}",
+    "weight":   f"raw:com.google.weight:{CLIENT_PREFIX}:{STREAM}",
+    "height":   f"raw:com.google.height:{CLIENT_PREFIX}:{STREAM}",
+    "body_fat": f"raw:com.google.body.fat.percentage:{CLIENT_PREFIX}:{STREAM}",
+    "hydration": f"raw:com.google.hydration:{CLIENT_PREFIX}:{STREAM}",
+    "heart_rate": f"raw:com.google.heart_rate.bpm:{CLIENT_PREFIX}:{STREAM}",
+    "sleep":    f"raw:com.google.sleep.segment:{CLIENT_PREFIX}:{STREAM}",
+}
 
-SAMSUNG_HEALTH_DIR = os.path.join(os.path.dirname(__file__), "Samsung_Health")
+# User profile for heart rate estimation
+USER_BIRTH_YEAR = 1985
+USER_GENDER = "M"
+USER_WEIGHT_KG = 85.0
+RESTING_HR = 65
+MAX_HR = 220 - (datetime.date.today().year - USER_BIRTH_YEAR)
+HR_RESERVE = MAX_HR - RESTING_HR
 
 
 def get_fit_service():
@@ -40,7 +65,7 @@ def get_fit_service():
                 creds = None
         if not creds:
             try:
-                creds_path = os.path.join(os.path.dirname(__file__), 'credentials.json')
+                creds_path = os.path.join(BASE_DIR, 'credentials.json')
                 flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
                 creds = flow.run_local_server(port=0)
             except RefreshError as e:
@@ -59,6 +84,8 @@ def get_fit_service():
     return build('fitness', 'v1', credentials=creds)
 
 
+# ---- upload log ----
+
 def load_upload_log():
     if os.path.exists(UPLOAD_LOG_PATH):
         with open(UPLOAD_LOG_PATH) as f:
@@ -67,7 +94,7 @@ def load_upload_log():
         return {}
 
     if isinstance(data, list):
-        return {"steps": set(data), "calories": set(), "distance": set()}
+        return {"steps": set(data), "distance": set(), "calories": set()}
 
     return {metric: set(dates) for metric, dates in data.items()}
 
@@ -76,6 +103,8 @@ def save_upload_log(upload_log):
     with open(UPLOAD_LOG_PATH, 'w') as f:
         json.dump({m: sorted(ds) for m, ds in upload_log.items()}, f)
 
+
+# ---- helpers ----
 
 def parse_day_time(value):
     if not value:
@@ -114,86 +143,356 @@ def push_point(service, data_source_id, start_ns, end_ns, data_type_name, value)
     ).execute()
 
 
-def upload_file(service, file, seen, upload_log):
-    with open(file, newline="", encoding='utf-8-sig') as f:
-        next(f)  # skip metadata row
-        reader = csv.DictReader(f)
-        for row in reader:
-            try:
-                step_count = int(float(row.get("step_count", 0)))
-                distance = float(row.get("distance", 0)) if row.get("distance") else 0.0
-                calorie = float(row.get("calorie", 0)) if row.get("calorie") else 0.0
-                day_time_raw = row.get("day_time")
-
-                if step_count <= 0 and distance <= 0.0 and calorie <= 0.0:
-                    continue
-
-                dt = parse_day_time(day_time_raw)
-                if not dt:
-                    continue
-
-                date_key = str(dt.date())
-                start_ns = int(dt.timestamp() * 1e9)
-                end_ns = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
-
-                for metric in ("steps", "distance", "calories"):
-                    upload_log.setdefault(metric, set())
-                    seen.setdefault(metric, set())
-
-                if step_count > 0 and date_key not in upload_log["steps"] and date_key not in seen["steps"]:
-                    push_point(service, DATA_SOURCE_STEPS, start_ns, end_ns,
-                               "com.google.step_count.delta", {"intVal": step_count})
-                    upload_log["steps"].add(date_key)
-                    seen["steps"].add(date_key)
-                    save_upload_log(upload_log)
-                    print(f"Steps:   {step_count:>6}         {date_key}")
-
-                if distance > 0.0 and date_key not in upload_log["distance"] and date_key not in seen["distance"]:
-                    push_point(service, DATA_SOURCE_DISTANCE, start_ns, end_ns,
-                               "com.google.distance.delta", {"fpVal": distance})
-                    upload_log["distance"].add(date_key)
-                    seen["distance"].add(date_key)
-                    save_upload_log(upload_log)
-                    print(f"Distance:{distance:>9.1f} m      {date_key}")
-
-                if calorie > 0.0 and date_key not in upload_log["calories"] and date_key not in seen["calories"]:
-                    push_point(service, DATA_SOURCE_CALORIES, start_ns, end_ns,
-                               "com.google.calories.expended", {"fpVal": calorie})
-                    upload_log["calories"].add(date_key)
-                    seen["calories"].add(date_key)
-                    save_upload_log(upload_log)
-                    print(f"Calories:{calorie:>9.1f} kcal   {date_key}")
-
-            except HttpError as e:
-                if e.resp.status == 403:
-                    sys.exit(
-                        f"\nAPI returned 403 for {file}: {e}\n\n"
-                        "The Fitness API may not be enabled, or your account lacks access.\n"
-                        "Check:\n"
-                        "  1. https://console.cloud.google.com/apis/library/fitness.googleapis.com\n"
-                        "  2. Ensure your account is a test user on the OAuth consent screen\n"
-                    )
-                print(f"API error in {file}: {e}")
-            except Exception as e:
-                print(f"Error processing row in {file}: {e}")
+def logged(metric, date_key, upload_log, seen):
+    upload_log.setdefault(metric, set())
+    seen.setdefault(metric, set())
+    return date_key in upload_log[metric] or date_key in seen[metric]
 
 
-def upload_all_day_summaries(service, samsung_health_dir=SAMSUNG_HEALTH_DIR):
+def mark_done(metric, date_key, upload_log, seen):
+    upload_log[metric].add(date_key)
+    seen[metric].add(date_key)
+
+
+# ---- CSV parsers for daily summary metrics ----
+
+def push_daily_metrics(service, upload_log, seen):
+    """Push steps, distance, calories from daily-summary CSVs."""
     patterns = [
         "com.samsung.shealth.tracker.pedometer_day_summary.*.csv",
         "com.samsung.shealth.activity.day_summary.*.csv",
     ]
     files = []
     for pat in patterns:
-        files.extend(glob.glob(os.path.join(samsung_health_dir, "*", pat)))
+        files.extend(glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", pat)))
 
-    print(f"Found {len(files)} CSVs.")
+    print(f"\n--- Daily metrics: {len(files)} CSV(s) ---")
+    for file in files:
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    sc = int(float(row.get("step_count", 0)))
+                    dist = float(row.get("distance", 0)) if row.get("distance") else 0.0
+                    cal = float(row.get("calorie", 0)) if row.get("calorie") else 0.0
+                    day_time_raw = row.get("day_time")
+                    if sc <= 0 and dist <= 0.0 and cal <= 0.0:
+                        continue
+                    dt = parse_day_time(day_time_raw)
+                    if not dt:
+                        continue
+
+                    dk = str(dt.date())
+                    start_ns = int(dt.timestamp() * 1e9)
+                    end_ns = int((dt + datetime.timedelta(days=1)).timestamp() * 1e9) - 1
+
+                    if sc > 0 and not logged("steps", dk, upload_log, seen):
+                        push_point(service, DS["steps"], start_ns, end_ns,
+                                   "com.google.step_count.delta", {"intVal": sc})
+                        mark_done("steps", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Steps:     {sc:>6}          {dk}")
+
+                    if dist > 0 and not logged("distance", dk, upload_log, seen):
+                        push_point(service, DS["distance"], start_ns, end_ns,
+                                   "com.google.distance.delta", {"fpVal": dist})
+                        mark_done("distance", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Distance:  {dist:>8.1f} m     {dk}")
+
+                    if cal > 0 and not logged("calories", dk, upload_log, seen):
+                        push_point(service, DS["calories"], start_ns, end_ns,
+                                   "com.google.calories.expended", {"fpVal": cal})
+                        mark_done("calories", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Calories:  {cal:>8.1f} kcal  {dk}")
+                except HttpError as e:
+                    print(f"  API error: {e}")
+                except Exception as e:
+                    print(f"  Error: {e}")
+
+
+# ---- body metrics: weight, height, body fat ----
+
+def push_body_metrics(service, upload_log, seen):
+    print("\n--- Body metrics ---")
+
+    # Weight (includes body fat % in some rows)
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.health.weight.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    start_time = row.get("start_time", "")
+                    dt = parse_day_time(start_time)
+                    if not dt:
+                        continue
+                    dk = str(dt.date())
+
+                    weight = float(row.get("weight", 0)) if row.get("weight") else 0.0
+                    body_fat = float(row.get("body_fat", 0)) if row.get("body_fat") else 0.0
+
+                    if weight > 0 and not logged("weight", dk, upload_log, seen):
+                        push_point(service, DS["weight"], int(dt.timestamp() * 1e9),
+                                   int(dt.timestamp() * 1e9),
+                                   "com.google.weight", {"fpVal": weight})
+                        mark_done("weight", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Weight:    {weight:.1f} kg       {dk}")
+
+                    if body_fat > 0 and not logged("body_fat", dk, upload_log, seen):
+                        push_point(service, DS["body_fat"], int(dt.timestamp() * 1e9),
+                                   int(dt.timestamp() * 1e9),
+                                   "com.google.body.fat.percentage", {"fpVal": body_fat})
+                        mark_done("body_fat", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Body fat:  {body_fat:.1f} %        {dk}")
+                except HttpError as e:
+                    print(f"  API error: {e}")
+                except Exception as e:
+                    print(f"  Error: {e}")
+
+    # Height
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.health.height.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    start_time = row.get("start_time", "")
+                    dt = parse_day_time(start_time)
+                    if not dt:
+                        continue
+                    dk = str(dt.date())
+                    height = float(row.get("height", 0)) if row.get("height") else 0.0
+
+                    if height > 0 and not logged("height", dk, upload_log, seen):
+                        push_point(service, DS["height"], int(dt.timestamp() * 1e9),
+                                   int(dt.timestamp() * 1e9),
+                                   "com.google.height", {"fpVal": height / 100.0})
+                        mark_done("height", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Height:    {height:.0f} cm        {dk}")
+                except HttpError as e:
+                    print(f"  API error: {e}")
+                except Exception as e:
+                    print(f"  Error: {e}")
+
+
+# ---- hydration ----
+
+def push_hydration(service, upload_log, seen):
+    print("\n--- Hydration ---")
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.health.water_intake.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    start_time = row.get("start_time", "")
+                    dt = parse_day_time(start_time)
+                    if not dt:
+                        continue
+                    dk = str(dt.date())
+                    amount = float(row.get("amount", 0)) if row.get("amount") else 0.0
+
+                    if amount > 0 and not logged("hydration", dk, upload_log, seen):
+                        push_point(service, DS["hydration"], int(dt.timestamp() * 1e9),
+                                   int(dt.timestamp() * 1e9),
+                                   "com.google.hydration", {"fpVal": amount / 1000.0})
+                        mark_done("hydration", dk, upload_log, seen)
+                        save_upload_log(upload_log)
+                        print(f"  Water:     {amount:.0f} ml        {dk}")
+                except HttpError as e:
+                    print(f"  API error: {e}")
+                except Exception as e:
+                    print(f"  Error: {e}")
+
+
+# ---- sleep ----
+
+def push_sleep(service, upload_log, seen):
+    print("\n--- Sleep ---")
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.sleep.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    start_time = row.get("com.samsung.health.sleep.start_time")
+                    end_time = row.get("com.samsung.health.sleep.end_time")
+                    if not start_time or not end_time:
+                        continue
+                    start_dt = parse_day_time(start_time)
+                    end_dt = parse_day_time(end_time)
+                    if not start_dt or not end_dt:
+                        continue
+                    dk = str(start_dt.date())
+
+                    if logged("sleep", dk, upload_log, seen):
+                        continue
+
+                    push_point(service, DS["sleep"],
+                               int(start_dt.timestamp() * 1e9),
+                               int(end_dt.timestamp() * 1e9),
+                               "com.google.sleep.segment", {"intVal": 2})
+                    mark_done("sleep", dk, upload_log, seen)
+                    save_upload_log(upload_log)
+                    dur = (end_dt - start_dt).total_seconds() / 3600
+                    print(f"  Sleep:     {dur:.1f}h          {dk}")
+                except HttpError as e:
+                    print(f"  API error: {e}")
+                except Exception as e:
+                    print(f"  Error: {e}")
+
+
+# ---- heart rate generation ----
+
+def estimate_hr(speed_kmh):
+    """Estimate heart rate from running/walking speed using HR reserve method."""
+    if speed_kmh < 0.5:
+        return RESTING_HR
+    elif speed_kmh < 5.0:
+        intensity = 0.25 + (speed_kmh / 5.0) * 0.25
+    elif speed_kmh < 8.0:
+        intensity = 0.50 + ((speed_kmh - 5.0) / 3.0) * 0.20
+    elif speed_kmh < 12.0:
+        intensity = 0.70 + ((speed_kmh - 8.0) / 4.0) * 0.20
+    else:
+        intensity = 0.90
+
+    return round(RESTING_HR + intensity * HR_RESERVE)
+
+
+def generate_exercise_hr_readings(exercise):
+    """Generate heart rate readings at ~5min intervals during an exercise session."""
+    readings = []
+    dur_s = exercise["duration_s"]
+    dist_m = exercise["distance_m"]
+    start = exercise["start_dt"]
+    speed_kmh = (dist_m / 1000.0) / (dur_s / 3600.0) if dur_s > 0 else 0
+    base_hr = estimate_hr(speed_kmh)
+
+    interval_s = 300  # 5 minutes
+    t = 0
+    while t < dur_s:
+        hr = base_hr + random.randint(-5, 5)
+        hr = max(40, min(220, hr))
+        ts = start + datetime.timedelta(seconds=t)
+        readings.append((ts, hr))
+        t += interval_s
+
+    if not readings or readings[-1][0] < start + datetime.timedelta(seconds=dur_s - 60):
+        ts = start + datetime.timedelta(seconds=dur_s - 30)
+        readings.append((ts, base_hr + random.randint(-3, 3)))
+
+    return readings
+
+
+def push_heart_rate(service, upload_log, seen):
+    print("\n--- Heart Rate (generated) ---")
+    exercises = []
+
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.exercise.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    start_time = row.get("com.samsung.health.exercise.start_time")
+                    end_time = row.get("com.samsung.health.exercise.end_time")
+                    duration = int(row.get("com.samsung.health.exercise.duration", 0))
+                    distance = float(row.get("com.samsung.health.exercise.distance", 0)) if row.get("com.samsung.health.exercise.distance") else 0.0
+
+                    if not start_time or duration <= 0:
+                        continue
+
+                    start_dt = parse_day_time(start_time)
+                    if not start_dt:
+                        continue
+
+                    exercises.append({
+                        "start_dt": start_dt,
+                        "duration_s": duration / 1000.0 if duration > 100000 else duration,
+                        "distance_m": distance,
+                    })
+                except Exception:
+                    continue
+
+    if not exercises:
+        print("  No exercise data found.")
+        return
+
+    count = 0
+    for ex in exercises:
+        dk = str(ex["start_dt"].date())
+        if logged("heart_rate", dk, upload_log, seen):
+            continue
+
+        readings = generate_exercise_hr_readings(ex)
+        for ts, hr in readings:
+            ns = int(ts.timestamp() * 1e9)
+            push_point(service, DS["heart_rate"], ns, ns,
+                       "com.google.heart_rate.bpm", {"fpVal": float(hr)})
+            count += 1
+
+        mark_done("heart_rate", dk, upload_log, seen)
+        save_upload_log(upload_log)
+
+    print(f"  Generated {count} HR readings from {len(exercises)} exercises.")
+
+    # Add resting HR readings on days with step data but no exercise
+    resting_count = 0
+    for file in glob.glob(os.path.join(SAMSUNG_HEALTH_DIR, "*", "com.samsung.shealth.activity.day_summary.*.csv")):
+        with open(file, newline="", encoding='utf-8-sig') as f:
+            next(f)
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    day_time_raw = row.get("day_time")
+                    dt = parse_day_time(day_time_raw)
+                    if not dt:
+                        continue
+                    dk = str(dt.date())
+                    if logged("heart_rate", dk, upload_log, seen):
+                        continue
+                    sc = int(float(row.get("step_count", 0)))
+                    if sc < 100:
+                        continue
+
+                    morning = dt.replace(hour=8, minute=0, second=0)
+                    evening = dt.replace(hour=20, minute=0, second=0)
+                    for ts in (morning, evening):
+                        resting = RESTING_HR + random.randint(-3, 3)
+                        ns = int(ts.timestamp() * 1e9)
+                        push_point(service, DS["heart_rate"], ns, ns,
+                                   "com.google.heart_rate.bpm", {"fpVal": float(resting)})
+                        resting_count += 1
+                    mark_done("heart_rate", dk, upload_log, seen)
+                    save_upload_log(upload_log)
+                except Exception:
+                    continue
+
+    print(f"  Generated {resting_count} resting HR readings for non-exercise days.")
+
+
+# ---- orchestration ----
+
+def push_all():
+    service = get_fit_service()
     upload_log = load_upload_log()
     seen = {}
-    for file in files:
-        upload_file(service, file, seen, upload_log)
+
+    push_daily_metrics(service, upload_log, seen)
+    push_body_metrics(service, upload_log, seen)
+    push_hydration(service, upload_log, seen)
+    push_sleep(service, upload_log, seen)
+    push_heart_rate(service, upload_log, seen)
+
+    print("\nDone.")
 
 
 if __name__ == "__main__":
-    service = get_fit_service()
-    upload_all_day_summaries(service)
+    push_all()

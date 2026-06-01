@@ -1,5 +1,7 @@
 .venv/
 __pycache__/
+.DS_Store
 token.pickle
 token_read.pickle
 uploaded_dates.json
+.~lock.*
