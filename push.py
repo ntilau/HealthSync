@@ -45,12 +45,18 @@ METRICS = {
     "height":       ("com.google.height",                  "fpVal",  float),
     "body_fat":     ("com.google.body.fat.percentage",     "fpVal",  float),
     "hydration":    ("com.google.hydration",               "fpVal",  float),
-    "heart_points": ("com.google.heart_minutes",           "fpVal",  float),
-    "sleep":        ("com.google.sleep.segment",           "intVal", int),
+    "heart_points":  ("com.google.heart_minutes",           "fpVal",  float),
+    "total_calories":("com.google.calories.expended",       "fpVal",  float),
+    "sleep":         ("com.google.sleep.segment",           "intVal", int),
 }
 
 # derive data-source IDs
-DS = {key: f"raw:{dtype}:{CLIENT_PREFIX}:{STREAM}" for key, (dtype, _, _) in METRICS.items()}
+DS = {}
+for key, (dtype, _, _) in METRICS.items():
+    stream = STREAM
+    if key == "total_calories":
+        stream = "samsung_total_calories"
+    DS[key] = f"raw:{dtype}:{CLIENT_PREFIX}:{stream}"
 
 # ── auth ────────────────────────────────────────────────────────────
 
@@ -281,6 +287,38 @@ def push_hydration(service, log, seen):
             except HttpError as e:
                 print(f"  API error: {e}")
 
+# ── total daily calories (resting + active) ──────────────────────────
+
+def push_total_calories(service, log, seen):
+    section("Total Daily Calories — resting + active from calories_burned.details")
+
+    for file in csv_files("calories_burned.details"):
+        for r in iter_csv(file, {
+            "com.samsung.shealth.calories_burned.day_time": "day_time",
+            "com.samsung.shealth.calories_burned.rest_calorie": "rest",
+            "com.samsung.shealth.calories_burned.active_calorie": "active",
+        }):
+            try:
+                dt = parse_time(r["day_time"])
+                if not dt:
+                    continue
+                dk = date_key(dt)
+
+                rest = float(r["rest"] or 0)
+                active = float(r["active"] or 0)
+                total = rest + active
+                if total <= 0 or skip("total_calories", dk, log, seen):
+                    continue
+
+                s, e = day_range(dt)
+                push_point(service, "calories", s, e, total)
+                mark("total_calories", dk, log, seen)
+                save_log(log)
+                print(f"  total_calories  {total:>8.0f} kcal    {dk}  "
+                      f"(rest={rest:.0f} + active={active:.0f})")
+            except HttpError as e:
+                print(f"  API error: {e}")
+
 # ── sleep ───────────────────────────────────────────────────────────
 
 def push_sleep(service, log, seen):
@@ -494,6 +532,7 @@ def push_all():
     push_daily_metrics(service, log, seen)
     push_body_metrics(service, log, seen)
     push_hydration(service, log, seen)
+    push_total_calories(service, log, seen)
     push_sleep(service, log, seen)
     push_minute_steps_and_heart_points(service, log, seen)
 
