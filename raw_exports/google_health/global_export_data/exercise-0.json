@@ -1,0 +1,415 @@
+[{
+  "logId" : 5148379519,
+  "activityName" : "Walk",
+  "activityTypeId" : 90013,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 2,
+    "name" : "lightly"
+  },{
+    "minutes" : 4,
+    "name" : "fairly"
+  },{
+    "minutes" : 32,
+    "name" : "very"
+  }],
+  "calories" : 399,
+  "distance" : 0.013952,
+  "distanceUnit" : "Kilometer",
+  "duration" : 2284000,
+  "activeDuration" : 2284000,
+  "steps" : 4397,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/5148379519?export=tcx",
+  "speed" : 0.021990893169877408,
+  "pace" : 163704.12844036697,
+  "lastModified" : "12/11/16 12:24:50",
+  "startTime" : "12/11/16 11:46:28",
+  "originalStartTime" : "12/11/16 11:46:28",
+  "originalDuration" : 2284000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 5233753051,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 4,
+    "name" : "lightly"
+  },{
+    "minutes" : 2,
+    "name" : "fairly"
+  },{
+    "minutes" : 28,
+    "name" : "very"
+  }],
+  "calories" : 386,
+  "distance" : 5.073763,
+  "distanceUnit" : "Kilometer",
+  "duration" : 2091000,
+  "activeDuration" : 1982815,
+  "steps" : 4142,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/5233753051?export=tcx",
+  "speed" : 9.211926881731276,
+  "pace" : 390.6370873058123,
+  "lastModified" : "12/18/16 13:09:41",
+  "startTime" : "12/18/16 12:34:42",
+  "originalStartTime" : "12/18/16 12:34:42",
+  "originalDuration" : 2091000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 5305024197,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 1,
+    "name" : "lightly"
+  },{
+    "minutes" : 0,
+    "name" : "fairly"
+  },{
+    "minutes" : 16,
+    "name" : "very"
+  }],
+  "calories" : 206,
+  "distance" : 2.480485,
+  "distanceUnit" : "Kilometer",
+  "duration" : 1030000,
+  "activeDuration" : 1030000,
+  "steps" : 2330,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/5305024197?export=tcx",
+  "speed" : 8.669656310679612,
+  "pace" : 415.24137416674563,
+  "lastModified" : "12/25/16 11:06:36",
+  "startTime" : "12/25/16 10:49:20",
+  "originalStartTime" : "12/25/16 10:49:20",
+  "originalDuration" : 1030000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 5314895397,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 1,
+    "name" : "sedentary"
+  },{
+    "minutes" : 0,
+    "name" : "lightly"
+  },{
+    "minutes" : 0,
+    "name" : "fairly"
+  },{
+    "minutes" : 25,
+    "name" : "very"
+  }],
+  "calories" : 339,
+  "distance" : 4.044374,
+  "distanceUnit" : "Kilometer",
+  "duration" : 1659000,
+  "activeDuration" : 1579661,
+  "steps" : 3677,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/5314895397?export=tcx",
+  "speed" : 9.217006940096642,
+  "pace" : 390.41888806524815,
+  "lastModified" : "12/26/16 19:22:50",
+  "startTime" : "12/26/16 18:55:01",
+  "originalStartTime" : "12/26/16 18:55:01",
+  "originalDuration" : 1659000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 5825530032,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 4,
+    "name" : "lightly"
+  },{
+    "minutes" : 4,
+    "name" : "fairly"
+  },{
+    "minutes" : 30,
+    "name" : "very"
+  }],
+  "calories" : 376,
+  "distance" : 4.024135,
+  "distanceUnit" : "Kilometer",
+  "duration" : 2310000,
+  "activeDuration" : 2310000,
+  "steps" : 4287,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/5825530032?export=tcx",
+  "speed" : 6.27137922077922,
+  "pace" : 574.0364078242901,
+  "lastModified" : "01/29/17 16:04:21",
+  "startTime" : "01/29/17 15:25:41",
+  "originalStartTime" : "01/29/17 15:25:41",
+  "originalDuration" : 2310000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 6048727297,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 0,
+    "name" : "lightly"
+  },{
+    "minutes" : 0,
+    "name" : "fairly"
+  },{
+    "minutes" : 26,
+    "name" : "very"
+  }],
+  "calories" : 295,
+  "distance" : 3.49574,
+  "distanceUnit" : "Kilometer",
+  "duration" : 1517000,
+  "activeDuration" : 1517000,
+  "steps" : 3289,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/6048727297?export=tcx",
+  "speed" : 8.295757415952538,
+  "pace" : 433.9567587978511,
+  "lastModified" : "02/12/17 14:03:12",
+  "startTime" : "02/12/17 13:37:51",
+  "originalStartTime" : "02/12/17 13:37:51",
+  "originalDuration" : 1517000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 6071082493,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 0,
+    "name" : "lightly"
+  },{
+    "minutes" : 1,
+    "name" : "fairly"
+  },{
+    "minutes" : 19,
+    "name" : "very"
+  }],
+  "calories" : 256,
+  "distance" : 3.431421,
+  "distanceUnit" : "Kilometer",
+  "duration" : 1183000,
+  "activeDuration" : 1183000,
+  "steps" : 2792,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/6071082493?export=tcx",
+  "speed" : 10.442194082840235,
+  "pace" : 344.7551320575354,
+  "lastModified" : "02/13/17 21:24:32",
+  "startTime" : "02/13/17 21:04:44",
+  "originalStartTime" : "02/13/17 21:04:44",
+  "originalDuration" : 1183000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 6177706331,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 0,
+    "name" : "lightly"
+  },{
+    "minutes" : 0,
+    "name" : "fairly"
+  },{
+    "minutes" : 13,
+    "name" : "very"
+  }],
+  "calories" : 165,
+  "distance" : 2.169988,
+  "distanceUnit" : "Kilometer",
+  "duration" : 761000,
+  "activeDuration" : 761000,
+  "steps" : 1796,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/6177706331?export=tcx",
+  "speed" : 10.265383442838372,
+  "pace" : 350.6931835567754,
+  "lastModified" : "02/19/17 12:27:54",
+  "startTime" : "02/19/17 12:02:21",
+  "originalStartTime" : "02/19/17 12:02:21",
+  "originalDuration" : 761000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+},{
+  "logId" : 6301164126,
+  "activityName" : "Run",
+  "activityTypeId" : 90009,
+  "activityLevel" : [{
+    "minutes" : 0,
+    "name" : "sedentary"
+  },{
+    "minutes" : 0,
+    "name" : "lightly"
+  },{
+    "minutes" : 1,
+    "name" : "fairly"
+  },{
+    "minutes" : 24,
+    "name" : "very"
+  }],
+  "calories" : 325,
+  "distance" : 1.161696,
+  "distanceUnit" : "Kilometer",
+  "duration" : 1502000,
+  "activeDuration" : 1502000,
+  "steps" : 3636,
+  "source" : {
+    "type" : "app",
+    "name" : "Fitbit for iPhone",
+    "id" : "228TSL",
+    "url" : "https://www.fitbit.com/iphone",
+    "trackerFeatures" : ["STEPS","CALORIES","PACE","GPS","DISTANCE"]
+  },
+  "logType" : "mobile_run",
+  "manualValuesSpecified" : {
+    "calories" : false,
+    "distance" : false,
+    "steps" : false
+  },
+  "tcxLink" : "https://www.fitbit.com/activities/exercise/6301164126?export=tcx",
+  "speed" : 2.7843579227696407,
+  "pace" : 1292.9372228190507,
+  "lastModified" : "02/26/17 12:08:54",
+  "startTime" : "02/26/17 11:43:48",
+  "originalStartTime" : "02/26/17 11:43:48",
+  "originalDuration" : 1502000,
+  "hasGps" : true,
+  "shouldFetchDetails" : true,
+  "hasActiveZoneMinutes" : false
+}]

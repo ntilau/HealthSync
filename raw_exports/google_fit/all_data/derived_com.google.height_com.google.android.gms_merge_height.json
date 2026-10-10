@@ -1,0 +1,10 @@
+{
+    "Data Source": "derived:com.google.height:com.google.android.gms:merge_height",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":1.85}}],"originDataSourceId":"raw:com.google.height:362088348000:samsung_health_import","endTimeNanos":1746982238000000000,"dataTypeName":"com.google.height","startTimeNanos":1746982238000000000,"modifiedTimeMillis":1780348637477,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":1.86}}],"originDataSourceId":"raw:com.google.height:362088348000:samsung_health_import","endTimeNanos":1762060324000000000,"dataTypeName":"com.google.height","startTimeNanos":1762060324000000000,"modifiedTimeMillis":1780348637500,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":1.8600000143051147}}],"originDataSourceId":"derived:com.google.height:com.google.fitkit:apple:iphone:com.apple.health.53c6cb89-289e-49a2-859d-4080141a8520:local_data","endTimeNanos":1773944522468247040,"dataTypeName":"com.google.height","startTimeNanos":1773944522468247040,"modifiedTimeMillis":1774216089622,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":1.8600000143051147}}],"originDataSourceId":"raw:com.google.height:com.google.android.apps.fitness:user_input","endTimeNanos":1774215955875000000,"dataTypeName":"com.google.height","startTimeNanos":1774215955875000000,"modifiedTimeMillis":1774216111645,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":1.8600000143051147}}],"originDataSourceId":"derived:com.google.height:com.google.fitkit:apple:iphone:com.apple.health.b9d07894-f54b-4348-a99f-d587cce01737:local_data","endTimeNanos":1790800131246288896,"dataTypeName":"com.google.height","startTimeNanos":1790800131246288896,"modifiedTimeMillis":1790800175103,"rawTimestampNanos":0}
+    ]
+}

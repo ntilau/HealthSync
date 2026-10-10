@@ -1,0 +1,11 @@
+value_time,setting_name,setting_value
+2025-10-09T14:36:26Z,activity state,sedentary
+2025-10-09T14:36:26Z,auto run enabled,true
+2025-10-09T14:36:26Z,auto stride enabled,true
+2025-10-09T14:36:26Z,body constitution,regular
+2025-10-09T14:36:26Z,is nursing,false
+2025-10-09T14:36:26Z,pregnant state,not pregnant
+2025-10-09T14:36:26Z,sedentary prune time,2017-02-26T00:00:00.0Z
+2025-10-09T14:36:26Z,sleep proc algorithm,composite
+2025-10-09T14:36:26Z,stride length running,1189
+2026-03-22T21:38:25Z,stride length walking,768

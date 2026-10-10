@@ -1,0 +1,8 @@
+﻿com.samsung.shealth.service_preferences,6311013,1
+text_value,service_id,float_value,update_time,create_time,long_value,key,tag,blob_value,int_value,deviceuuid,pkg_name,double_value,datauuid
+,,,2026-02-26 13:31:58.865,2026-02-26 13:31:58.865,,oobe.completed,,,1,P1FU22eseu,com.sec.android.app.shealth,,a7b47282-9327-4fad-bf45-b1dca13ad556,
+,tracker.cycle,,2026-03-17 19:23:12.425,2026-02-26 13:32:01.206,,cycle.shd_consent_status,,,1,P1FU22eseu,com.sec.android.app.shealth,,cycle.shd_consent_status,
+,tracker.medication,,2026-02-26 13:32:01.225,2026-02-26 13:32:01.225,,medication.shd_consent_status,,,0,P1FU22eseu,com.sec.android.app.shealth,,medication.shd_consent_status,
+,tracker.daily_activity,,2026-03-18 19:17:01.951,2026-02-27 20:34:20.353,1773792000000,da_all_achievement_time,,,,P1FU22eseu,com.sec.android.app.shealth,,da_all_achievement_time,
+,tracker.daily_activity,,2026-03-02 20:21:02.578,2026-03-02 20:21:02.578,1772409600000,da_monthly_goal_first_day,,,,P1FU22eseu,com.sec.android.app.shealth,,da_monthly_goal_first_day,
+,mood,,2026-03-03 11:59:19.662,2026-03-03 11:59:19.662,,meditation_supported,,,1,P1FU22eseu,com.sec.android.app.shealth,,f671c41b-fd5f-4c45-93d1-2818483d5294,

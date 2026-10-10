@@ -1,0 +1,4 @@
+﻿com.samsung.shealth.tracker.floors_day_summary,6311013,1
+create_sh_ver,binning_data,modify_sh_ver,update_time,create_time,floor_count,version_code,deviceuuid,pkg_name,datauuid,day_time
+62950170,1572b872-9e93-4ae7-aba4-730fdd3a3465.binning_data.json,62950170,2025-05-15 12:50:32.316,2025-05-15 12:50:32.316,0,2,h6hg6DTKNp,com.sec.android.app.shealth,1572b872-9e93-4ae7-aba4-730fdd3a3465,1747267200000,
+63030110,85ee48f1-095a-4f2e-b6c2-c9805f3e3a67.binning_data.json,63030110,2025-09-23 04:10:32.209,2025-09-23 04:10:32.209,0,2,gzVl4KJPCr,com.sec.android.app.shealth,85ee48f1-095a-4f2e-b6c2-c9805f3e3a67,1758585600000,

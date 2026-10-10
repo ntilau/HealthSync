@@ -1,0 +1,7 @@
+{
+    "Data Source": "derived:com.google.body.fat.percentage:com.google.android.gms:merged",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":20}}],"originDataSourceId":"raw:com.google.body.fat.percentage:362088348000:samsung_health_import","endTimeNanos":1749500224000000000,"dataTypeName":"com.google.body.fat.percentage","startTimeNanos":1749500224000000000,"modifiedTimeMillis":1780348637602,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":25}}],"originDataSourceId":"raw:com.google.body.fat.percentage:362088348000:samsung_health_import","endTimeNanos":1749974185000000000,"dataTypeName":"com.google.body.fat.percentage","startTimeNanos":1749974185000000000,"modifiedTimeMillis":1780348637624,"rawTimestampNanos":0}
+    ]
+}

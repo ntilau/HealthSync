@@ -1,0 +1,6 @@
+{
+    "Data Source": "derived:com.google.height:com.google.fitkit:apple:iphone:com.apple.health.b9d07894-f54b-4348-a99f-d587cce01737:local_data",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":1.8600000143051147}}],"originDataSourceId":"","endTimeNanos":1790800131246288896,"dataTypeName":"com.google.height","startTimeNanos":1790800131246288896,"modifiedTimeMillis":1790800169892,"rawTimestampNanos":0}
+    ]
+}

@@ -1,0 +1,3 @@
+﻿com.samsung.shealth.exercise.program,6311013,3
+duration,planned_end_time,start_time,custom,completion_status,update_time,create_time,distance,schedule_count,time_offset,deviceuuid,pkg_name,end_time,datauuid,info_id,is_visible
+,2025-06-23 03:00:00.000,2025-06-11 03:00:00.000,,0,2025-07-01 09:48:43.426,2025-06-11 20:17:07.104,,13,UTC+0100,h6hg6DTKNp,com.sec.android.app.shealth,2025-06-23 03:00:00.000,519a6fd4-0db7-4c33-824b-9c99be7b5297,program.prod56,1,

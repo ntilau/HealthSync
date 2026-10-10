@@ -1,0 +1,6 @@
+{
+    "Data Source": "raw:com.google.hydration:362088348000:samsung_health_import",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":0.25}}],"originDataSourceId":"","endTimeNanos":1771696121000000000,"dataTypeName":"com.google.hydration","startTimeNanos":1771696121000000000,"modifiedTimeMillis":1780420880855,"rawTimestampNanos":0}
+    ]
+}

@@ -1,0 +1,4 @@
+reader_type,data_type,state
+ALL_FRIENDS,steps,UNINITIALIZED
+ALL_FRIENDS,cardio-load,UNINITIALIZED
+ALL_FRIENDS,google-core-profile,UNINITIALIZED

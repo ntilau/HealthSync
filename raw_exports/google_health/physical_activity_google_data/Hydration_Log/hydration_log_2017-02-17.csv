@@ -1,0 +1,3 @@
+start time,end time,amount consumed,data source
+2017-02-17T23:00:00Z,2017-02-17T23:01:00Z,250.0 MILLILITER,Google Health App
+2017-02-17T23:00:00Z,2017-02-17T23:01:00Z,500.0 MILLILITER,Google Health App

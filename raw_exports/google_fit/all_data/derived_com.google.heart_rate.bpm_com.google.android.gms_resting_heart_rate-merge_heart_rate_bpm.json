@@ -1,0 +1,4 @@
+{
+    "Data Source": "derived:com.google.heart_rate.bpm:com.google.android.gms:resting_heart_rate\u003c-merge_heart_rate_bpm",
+    "Data Points": []
+}

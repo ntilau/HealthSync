@@ -1,0 +1,7 @@
+{
+    "Data Source": "raw:com.google.height:362088348000:samsung_health_import",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":1.85}}],"originDataSourceId":"","endTimeNanos":1746982238000000000,"dataTypeName":"com.google.height","startTimeNanos":1746982238000000000,"modifiedTimeMillis":1780420879986,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":1.86}}],"originDataSourceId":"","endTimeNanos":1762060324000000000,"dataTypeName":"com.google.height","startTimeNanos":1762060324000000000,"modifiedTimeMillis":1780420880608,"rawTimestampNanos":0}
+    ]
+}

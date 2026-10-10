@@ -1,0 +1,6 @@
+{
+    "Data Source": "derived:com.google.hydration:com.google.android.gms:merged",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":0.25}}],"originDataSourceId":"raw:com.google.hydration:362088348000:samsung_health_import","endTimeNanos":1771696121000000000,"dataTypeName":"com.google.hydration","startTimeNanos":1771696121000000000,"modifiedTimeMillis":1780348642964,"rawTimestampNanos":0}
+    ]
+}

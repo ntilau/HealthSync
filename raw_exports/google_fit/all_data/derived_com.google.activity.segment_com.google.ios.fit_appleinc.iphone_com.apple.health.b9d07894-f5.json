@@ -1,0 +1,13 @@
+{
+    "Data Source": "derived:com.google.activity.segment:com.google.ios.fit:appleinc.:iphone:com.apple.health.b9d07894-f54b-4348-a99f-d587cce01737:top_level",
+    "Data Points": [
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1790872011084502272,"dataTypeName":"com.google.activity.segment","startTimeNanos":1790871780321844480,"modifiedTimeMillis":1790900968033,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1790939772026727680,"dataTypeName":"com.google.activity.segment","startTimeNanos":1790939533582018048,"modifiedTimeMillis":1790954234534,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1791206042269279744,"dataTypeName":"com.google.activity.segment","startTimeNanos":1791205973040697600,"modifiedTimeMillis":1791487114162,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1791302622047763712,"dataTypeName":"com.google.activity.segment","startTimeNanos":1791302332286463744,"modifiedTimeMillis":1791487114162,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1791356764032533760,"dataTypeName":"com.google.activity.segment","startTimeNanos":1791356697366759680,"modifiedTimeMillis":1791487114162,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1791456437279030272,"dataTypeName":"com.google.activity.segment","startTimeNanos":1791455837308947968,"modifiedTimeMillis":1791487114162,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1791546057827347200,"dataTypeName":"com.google.activity.segment","startTimeNanos":1791545745038541056,"modifiedTimeMillis":1791553208529,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1791546885873443072,"dataTypeName":"com.google.activity.segment","startTimeNanos":1791546168066093824,"modifiedTimeMillis":1791553208529,"rawTimestampNanos":0}
+    ]
+}

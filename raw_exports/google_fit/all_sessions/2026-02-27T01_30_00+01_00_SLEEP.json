@@ -1,0 +1,18 @@
+{
+  "fitnessActivity": "sleep",
+  "startTime": "2026-02-27T00:30:00Z",
+  "endTime": "2026-02-27T08:00:00Z",
+  "duration": "27000s",
+  "segment": [{
+    "fitnessActivity": "sleep",
+    "startTime": "2026-02-27T00:30:00Z",
+    "endTime": "2026-02-27T08:00:00Z"
+  }],
+  "aggregate": [{
+    "metricName": "com.google.calories.expended",
+    "floatValue": 557.65625
+  }],
+  "application": {
+    "packageName": "com.google.android.gms"
+  }
+}

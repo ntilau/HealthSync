@@ -1,0 +1,12 @@
+﻿com.samsung.health.device_profile,6311013,9
+manufacturer,providing_step_goal,create_sh_ver,step_source_group,device_type,backsync_step_goal,capability,modify_sh_ver,device_group,update_time,create_time,name,model,legacy_deviceuuid,connectivity_type,deviceuuid,pkg_name,accessory_type,fixed_name,datauuid
+Samsung,,,,,,,,360001,2026-03-12 14:49:48.300,2026-02-26 13:31:50.991,My Device,SM-G781B,,,P1FU22eseu,com.sec.android.app.shealth,,Samsung,e0fdea89-45cc-88cd-18a6-c1967730d837,
+Combined,,,,,,,,0,2026-02-26 13:32:00.600,2026-02-26 13:32:00.600,Combined,Combined,,,VfS0qUERdZ,com.sec.android.app.shealth,,Laurent's S20 FE,7af9722c-cd99-07b7-853a-43ce58e819c5,
+all_target,,,,,,,,0,2026-02-26 13:32:04.015,2026-02-26 13:32:04.015,all_target,all_target,,,Mk66SbFqK1,com.sec.android.app.shealth,,Laurent's S20 FE,471ca32b-a665-1e9e-7c27-7ac69485dc05,
+Samsung,,,,,,,,360001,2025-09-18 19:35:34.753,2025-09-18 19:35:34.753,My Device,SM-G781B,,,qXLS4qjkgH,com.sec.android.app.shealth,,Laurent's S20 FE,d54870e9-95d3-fd09-ae15-428b1a971674,
+Samsung,,,,,,,,360001,2025-05-11 15:56:53.515,2025-05-11 15:56:53.515,My Device,SM-G781B,,,h6hg6DTKNp,com.sec.android.app.shealth,,Galaxy,a6497105-81f5-3019-fcf0-f48e8e451fe8,
+Samsung,,,,,,,,360001,2025-09-22 20:11:36.118,2025-09-22 20:11:36.118,My Device,SM-G781B,,,/agtC4jsYz,com.sec.android.app.shealth,,Galaxy S20 FE 5G,1af1ba80-ef07-0028-78b1-efb0d9b11e47,
+Samsung,,,,,,,,360001,2026-02-21 10:50:34.477,2025-09-23 04:10:21.567,My Device,SM-G781B,,,gzVl4KJPCr,com.sec.android.app.shealth,,Samsung,664bd7d4-dedc-662e-f4e3-637d45dfb0cd,
+Samsung,,,,,,,,360001,2026-02-23 18:38:37.787,2026-02-23 18:38:37.787,My Device,SM-G781B,,,UsfEcx1VUw,com.sec.android.app.shealth,,Laurent's S20 FE,219874a9-5182-2b19-a077-0ff6198cc92b,
+Samsung,,,,,,,,360001,2026-02-26 11:22:13.077,2026-02-26 11:22:13.077,My Device,SM-G781B,,,aKuKH4XWeB,com.sec.android.app.shealth,,Laurent's S20 FE,cd84fc8d-c21e-c577-91b2-c4aea3bb566f,
+Apple,,,,,,,,360001,2026-03-21 17:31:19.991,2026-03-21 17:31:19.991,My Device,iPhone 6,,,GVudkr4E8Q,com.sec.android.app.shealth,,iPhone 6,38326337-3762-3361-6462-336132383934,

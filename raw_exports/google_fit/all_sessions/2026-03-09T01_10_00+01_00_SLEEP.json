@@ -1,0 +1,24 @@
+{
+  "fitnessActivity": "sleep",
+  "startTime": "2026-03-09T00:10:00Z",
+  "endTime": "2026-03-09T08:10:00Z",
+  "duration": "28800s",
+  "segment": [{
+    "fitnessActivity": "sleep",
+    "startTime": "2026-03-09T00:10:00Z",
+    "endTime": "2026-03-09T08:10:00Z"
+  }],
+  "aggregate": [{
+    "metricName": "com.google.calories.expended",
+    "floatValue": 594.8333333333333
+  }, {
+    "metricName": "com.google.step_count.delta",
+    "intValue": 9
+  }, {
+    "metricName": "com.google.distance.delta",
+    "floatValue": 6.84
+  }],
+  "application": {
+    "packageName": "com.google.android.gms"
+  }
+}

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: health-sync
+Version: 0.1.0
+Summary: Utilities for syncing Samsung Health data into Google Fit
+Requires-Python: >=3.10
+Requires-Dist: google-auth>=2.35.0
+Requires-Dist: google-auth-oauthlib>=1.2.1
+Requires-Dist: google-api-python-client>=2.161.0
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

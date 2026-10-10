@@ -1,0 +1,6 @@
+{
+    "Data Source": "derived:com.google.weight:com.google.fitkit:apple:iphone:com.apple.health.b9d07894-f54b-4348-a99f-d587cce01737:local_data",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":82}}],"originDataSourceId":"","endTimeNanos":1790800131275689984,"dataTypeName":"com.google.weight","startTimeNanos":1790800131275689984,"modifiedTimeMillis":1790800170264,"rawTimestampNanos":0}
+    ]
+}

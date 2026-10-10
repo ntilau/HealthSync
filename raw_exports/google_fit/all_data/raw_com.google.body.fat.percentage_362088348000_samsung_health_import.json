@@ -1,0 +1,7 @@
+{
+    "Data Source": "raw:com.google.body.fat.percentage:362088348000:samsung_health_import",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":20}}],"originDataSourceId":"","endTimeNanos":1749500224000000000,"dataTypeName":"com.google.body.fat.percentage","startTimeNanos":1749500224000000000,"modifiedTimeMillis":1780420877517,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":25}}],"originDataSourceId":"","endTimeNanos":1749974185000000000,"dataTypeName":"com.google.body.fat.percentage","startTimeNanos":1749974185000000000,"modifiedTimeMillis":1780420878424,"rawTimestampNanos":0}
+    ]
+}

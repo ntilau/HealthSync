@@ -1,0 +1,7 @@
+{
+    "Data Source": "derived:com.google.weight:com.google.fitkit:apple:iphone:com.apple.health.53c6cb89-289e-49a2-859d-4080141a8520:local_data",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":83}}],"originDataSourceId":"","endTimeNanos":1773944532850470912,"dataTypeName":"com.google.weight","startTimeNanos":1773944532850470912,"modifiedTimeMillis":1774216084405,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":85}}],"originDataSourceId":"","endTimeNanos":1774093588980147712,"dataTypeName":"com.google.weight","startTimeNanos":1774093588980147712,"modifiedTimeMillis":1774216084405,"rawTimestampNanos":0}
+    ]
+}

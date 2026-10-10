@@ -1,0 +1,20 @@
+{
+    "Data Source": "derived:com.google.activity.segment:com.google.ios.fit:appleinc.:iphone:com.apple.health.53c6cb89-289e-49a2-859d-4080141a8520:top_level",
+    "Data Points": [
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1773996413161164800,"dataTypeName":"com.google.activity.segment","startTimeNanos":1773996328393147904,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774006783841071616,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774006190424588800,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774043458623101696,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774042865156262144,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774044018551338752,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774043458631807232,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774044611875360000,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774044018559850496,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774045205153782272,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774044611883833344,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774045806105198848,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774045205162146560,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774094827798481920,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774094234218342656,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774095421492277248,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774094827808595200,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774101826431000832,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774101232802299136,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774102419985806080,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774101826440950528,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774103013402979584,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774102419995039232,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774103606928598784,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774103013412369664,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774113211020939264,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774112864236969216,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"intVal":7}}],"originDataSourceId":"","endTimeNanos":1774114397794991616,"dataTypeName":"com.google.activity.segment","startTimeNanos":1774113804379006208,"modifiedTimeMillis":1774216084932,"rawTimestampNanos":0}
+    ]
+}

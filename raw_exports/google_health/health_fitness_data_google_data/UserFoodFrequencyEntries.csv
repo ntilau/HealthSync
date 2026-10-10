@@ -1,0 +1,141 @@
+amount_last_consumed,date_last_eaten,food_id,last_eaten_map,calories,measurement_unit_name_last_used,measurement_unit_id_last_used,times_consumed,meal_type
+0.11999999731779099,2017-01-24,532588416,0,kcal: 317 user_provided_unit: KILOCALORIE,chilogrammo,389,1,BREAKFAST
+0.5,2016-12-24,536466608,0,kcal: 239 user_provided_unit: KILOCALORIE,chilogrammo,389,1,DINNER
+0.5,2017-01-20,532573801,16,kcal: 227 user_provided_unit: KILOCALORIE,litro,189,3,DINNER
+0.5,2017-01-29,547113604,0,kcal: 114 user_provided_unit: KILOCALORIE,chilogrammo,389,1,DINNER
+0.5,2017-02-26,532587165,0,kcal: 71 user_provided_unit: KILOCALORIE,porzione,2334,1,BREAKFAST
+0.75,2017-02-23,536466801,0,kcal: 274 user_provided_unit: KILOCALORIE,intero (15 cm di diametro),10430,3,DINNER
+0.75,2017-02-25,709053574,0,kcal: 353 user_provided_unit: KILOCALORIE,litro,189,1,DINNER
+0.75,2017-02-26,533227654,16961,kcal: 271 user_provided_unit: KILOCALORIE,porzione,2334,5,DINNER
+0.87000000476837158,2017-01-25,536462952,0,kcal: 189 user_provided_unit: KILOCALORIE,fetta media,9299,1,LUNCH
+1,2016-12-04,536461468,0,kcal: 426 user_provided_unit: KILOCALORIE,panino,2512,0,LUNCH
+1,2016-12-09,532583852,0,kcal: 313 user_provided_unit: KILOCALORIE,porzione (240 g),2365,1,LUNCH
+1,2016-12-09,532587528,0,kcal: 266 user_provided_unit: KILOCALORIE,pezzo,2339,1,BREAKFAST
+1,2016-12-09,536461952,0,kcal: 137 user_provided_unit: KILOCALORIE,tazza (240 ml),2829,1,BREAKFAST
+1,2016-12-09,536462264,0,kcal: 74 user_provided_unit: KILOCALORIE,tazza grande (240 ml),2859,1,BREAKFAST
+1,2016-12-12,536462464,0,kcal: 547 user_provided_unit: KILOCALORIE,panino,2512,1,DINNER
+1,2016-12-12,536462604,0,kcal: 566 user_provided_unit: KILOCALORIE,fetta (1/8 23 cm di diametro),2626,1,BREAKFAST
+1,2016-12-15,547440178,24,kcal: 626 user_provided_unit: KILOCALORIE,kebab,9499,3,LUNCH
+1,2016-12-17,536463715,0,kcal: 459 user_provided_unit: KILOCALORIE,panino,2512,1,LUNCH
+1,2016-12-21,532573313,0,kcal: 440 user_provided_unit: KILOCALORIE,panino,2512,1,LUNCH
+1,2016-12-21,536461471,2048,kcal: 352 user_provided_unit: KILOCALORIE,panino,2512,2,LUNCH
+1,2016-12-26,536463028,0,kcal: 28 user_provided_unit: KILOCALORIE,"fetta o anello (7,5 cm di diametro) con liquido",9859,1,LUNCH
+1,2016-12-28,536461696,0,kcal: 61 user_provided_unit: KILOCALORIE,pastina,9354,1,BREAKFAST
+1,2016-12-28,536463378,0,kcal: 2 user_provided_unit: KILOCALORIE,tazza di caffè (180 ml),2867,1,BREAKFAST
+1,2016-12-29,532587749,0,kcal: 274 user_provided_unit: KILOCALORIE,porzione,2334,1,LUNCH
+1,2016-12-29,536461472,393248,kcal: 153 user_provided_unit: KILOCALORIE,lattina,2422,4,DINNER
+1,2016-12-29,536461984,0,kcal: 106 user_provided_unit: KILOCALORIE,tazza,91,1,LUNCH
+1,2017-01-07,532570617,356532480,kcal: 105 user_provided_unit: KILOCALORIE,media (18 cm - 20 cm di lunghezza),2428,8,DINNER
+1,2017-01-07,532579817,0,kcal: 128 user_provided_unit: KILOCALORIE,porzione,2334,1,LUNCH
+1,2017-01-09,532580404,2,kcal: 166 user_provided_unit: KILOCALORIE,porzione,2334,2,DINNER
+1,2017-01-09,536461959,0,kcal: 137 user_provided_unit: KILOCALORIE,tazza (240 ml),2829,1,BREAKFAST
+1,2017-01-10,532575123,0,kcal: 109 user_provided_unit: KILOCALORIE,panino,2512,1,DINNER
+1,2017-01-10,701523887,0,kcal: 122 user_provided_unit: KILOCALORIE,porzione,304,1,DINNER
+1,2017-01-12,532586866,0,kcal: 289 user_provided_unit: KILOCALORIE,porzione (181 g),2602,1,LUNCH
+1,2017-01-13,536463882,0,kcal: 620 user_provided_unit: KILOCALORIE,kebab,9499,1,LUNCH
+1,2017-01-21,532579413,0,kcal: 46 user_provided_unit: KILOCALORIE,porzione,2334,1,BREAKFAST
+1,2017-01-21,536462015,0,kcal: 11 user_provided_unit: KILOCALORIE,tazza,91,1,DINNER
+1,2017-01-21,536462636,0,kcal: 336 user_provided_unit: KILOCALORIE,"porzione (1/6 quadrato da 20 cm, circa 6,5 cm x 10 cm)",9770,1,LUNCH
+1,2017-01-23,532582155,8192,kcal: 195 user_provided_unit: KILOCALORIE,pezzo,2339,2,LUNCH
+1,2017-01-23,536462073,0,kcal: 77 user_provided_unit: KILOCALORIE,"tazza, freschi",9567,1,LUNCH
+1,2017-01-23,707153792,0,kcal: 349 user_provided_unit: KILOCALORIE,porzione,304,1,LUNCH
+1,2017-01-24,540353898,0,kcal: 195 user_provided_unit: KILOCALORIE,porzione,2334,2,LUNCH
+1,2017-01-27,536465865,0,kcal: 356 user_provided_unit: KILOCALORIE,tazza,91,1,LUNCH
+1,2017-01-27,700600853,0,kcal: 109 user_provided_unit: KILOCALORIE,porzione,304,1,LUNCH
+1,2017-01-28,536461778,0,kcal: 78 user_provided_unit: KILOCALORIE,tazza,91,1,LUNCH
+1,2017-02-04,532570691,1,kcal: 340 user_provided_unit: KILOCALORIE,porzione,2334,4,LUNCH
+1,2017-02-09,532585861,0,kcal: 77 user_provided_unit: KILOCALORIE,porzione,2334,1,LUNCH
+1,2017-02-09,536461663,16777216,kcal: 137 user_provided_unit: KILOCALORIE,tazza (240 ml),2829,2,BREAKFAST
+1,2017-02-11,532585802,2,kcal: 238 user_provided_unit: KILOCALORIE,porzione,2334,2,BREAKFAST
+1,2017-02-16,532585884,0,kcal: 94 user_provided_unit: KILOCALORIE,fetta,2354,1,LUNCH
+1,2017-02-17,532585305,8192,kcal: 144 user_provided_unit: KILOCALORIE,fetta,2354,3,LUNCH
+1,2017-02-18,532584413,0,kcal: 153 user_provided_unit: KILOCALORIE,cocktail,2366,1,BREAKFAST
+1,2017-02-18,536464730,0,kcal: 138 user_provided_unit: KILOCALORIE,bibita (150 ml),10146,1,BREAKFAST
+1,2017-02-19,536461945,1051652,kcal: 9 user_provided_unit: KILOCALORIE,"tazza, tagliuzzata o a pezzi",9503,9,LUNCH
+1,2017-02-20,536461661,947997956,kcal: 125 user_provided_unit: KILOCALORIE,porzione pari a 150 ml,2545,25,DINNER
+1,2017-02-20,536463243,0,kcal: 93 user_provided_unit: KILOCALORIE,grande,2477,1,LUNCH
+1,2017-02-21,536462393,0,kcal: 383 user_provided_unit: KILOCALORIE,tazza,91,1,LUNCH
+1,2017-02-21,710646903,0,kcal: 394 user_provided_unit: KILOCALORIE,porzione,304,1,LUNCH
+1,2017-02-22,708164742,0,kcal: 383 user_provided_unit: KILOCALORIE,porzione,304,2,LUNCH
+1,2017-02-23,532569988,134217728,kcal: 218 user_provided_unit: KILOCALORIE,porzione,2334,2,LUNCH
+1,2017-02-23,532586519,134742016,kcal: 204 user_provided_unit: KILOCALORIE,fetta,2354,5,LUNCH
+1,2017-02-26,536465273,274809053,kcal: 105 user_provided_unit: KILOCALORIE,media (18 cm - 20 cm di lunghezza),2428,16,BREAKFAST
+1.6599999666213989,2017-01-12,535185386,-2010636288,kcal: 511 user_provided_unit: KILOCALORIE,piadina,2419,6,DINNER
+10,2017-01-27,536462016,8,kcal: 120 user_provided_unit: KILOCALORIE,tazza,91,2,DINNER
+100,2017-01-08,532585330,0,kcal: 348 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+100,2017-01-12,536463238,536870912,kcal: 125 user_provided_unit: KILOCALORIE,grammo,147,2,LUNCH
+100,2017-02-09,532571936,0,kcal: 195 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+100,2017-02-20,532586394,0,kcal: 160 user_provided_unit: KILOCALORIE,grammo,147,2,LUNCH
+100.16000366210938,2017-02-16,548371536,0,kcal: 151 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+100.33000183105469,2017-01-21,536466793,0,kcal: 42 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+100.33000183105469,2017-02-08,536463129,0,kcal: 215 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+101.25,2016-12-26,536463713,4096,kcal: 188 user_provided_unit: KILOCALORIE,grammo,147,2,LUNCH
+101.75,2016-12-29,536461645,0,kcal: 24 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+110,2017-02-08,536461884,513,kcal: 121 user_provided_unit: KILOCALORIE,grammo,147,3,DINNER
+120,2017-02-25,536462857,0,kcal: 236 user_provided_unit: KILOCALORIE,grammo,147,2,DINNER
+125,2016-12-05,712592433,0,kcal: 300 user_provided_unit: KILOCALORIE,grammo,147,0,BREAKFAST
+125,2017-01-21,532570283,0,kcal: 57 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+125,2017-02-11,712593943,12320,kcal: 375 user_provided_unit: KILOCALORIE,grammo,147,5,LUNCH
+130,2017-02-16,532583300,16777216,kcal: 223 user_provided_unit: KILOCALORIE,grammo,147,2,LUNCH
+130,2017-02-26,532576517,0,kcal: 139 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+140,2017-02-23,532575364,0,kcal: 226 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+150,2017-02-11,532584925,0,kcal: 171 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+160,2017-02-19,536462362,2,kcal: 491 user_provided_unit: KILOCALORIE,grammo,147,3,LUNCH
+160.5,2017-01-13,536464657,0,kcal: 275 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+175,2017-01-22,532582396,0,kcal: 231 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+175.5,2017-01-22,536461475,0,kcal: 56 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+177.33000183105469,2017-02-20,536461750,33557504,kcal: 55 user_provided_unit: KILOCALORIE,grammo,147,4,LUNCH
+2,2016-12-26,536466021,0,kcal: 172 user_provided_unit: KILOCALORIE,fetta,2354,1,LUNCH
+2,2016-12-28,536465383,0,kcal: 136 user_provided_unit: KILOCALORIE,medio,2424,1,LUNCH
+2,2017-01-10,532576273,0,kcal: 104 user_provided_unit: KILOCALORIE,porzione,2334,1,LUNCH
+2,2017-01-15,532573886,0,kcal: 420 user_provided_unit: KILOCALORIE,porzione,2334,2,LUNCH
+2,2017-01-15,549705324,64,kcal: 256 user_provided_unit: KILOCALORIE,porzione,2334,3,DINNER
+2,2017-01-20,536464441,0,kcal: 200 user_provided_unit: KILOCALORIE,frutto senza semi,10099,0,DINNER
+2,2017-01-29,536461611,0,kcal: 244 user_provided_unit: KILOCALORIE,porzione pari a 150 ml,2545,1,DINNER
+2,2017-01-29,536466182,0,kcal: 238 user_provided_unit: KILOCALORIE,cucchiaio da tavolo,2349,1,DINNER
+2,2017-02-08,536462019,0,kcal: 310 user_provided_unit: KILOCALORIE,porzione (360 g),9536,1,DINNER
+2,2017-02-09,536462471,8,kcal: 120 user_provided_unit: KILOCALORIE,medio,2424,3,DINNER
+2,2017-02-11,536464449,12384,kcal: 124 user_provided_unit: KILOCALORIE,"frutto (6,5 cm di diametro)",2848,5,DINNER
+2,2017-02-17,532587538,0,kcal: 80 user_provided_unit: KILOCALORIE,frutto,2416,1,LUNCH
+2,2017-02-19,536465288,2,kcal: 130 user_provided_unit: KILOCALORIE,medio,2424,2,LUNCH
+2,2017-02-23,533836628,0,kcal: 90 user_provided_unit: KILOCALORIE,porzione,2334,2,LUNCH
+2,2017-02-25,536462770,67739664,kcal: 80 user_provided_unit: KILOCALORIE,cucchiaino,364,11,DINNER
+2,2017-02-26,532570615,0,kcal: 330 user_provided_unit: KILOCALORIE,porzione,2334,1,LUNCH
+200,2017-01-10,536464815,1,kcal: 62 user_provided_unit: KILOCALORIE,grammo,147,2,LUNCH
+200,2017-02-21,536463745,1073741824,kcal: 390 user_provided_unit: KILOCALORIE,grammo,147,3,DINNER
+200,2017-02-26,532574503,8385,kcal: 114 user_provided_unit: KILOCALORIE,grammo,147,5,BREAKFAST
+220,2016-12-24,532582726,20576,kcal: 258 user_provided_unit: KILOCALORIE,grammo,147,5,BREAKFAST
+220,2017-02-25,536462480,0,kcal: 644 user_provided_unit: KILOCALORIE,grammo,147,3,LUNCH
+233,2017-01-27,532584911,0,kcal: 341 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+25,2017-01-08,532580158,0,kcal: 123 user_provided_unit: KILOCALORIE,cl,401,1,BREAKFAST
+3,2017-01-29,532587371,0,kcal: 87 user_provided_unit: KILOCALORIE,tazza di caffè (180 ml),2867,3,BREAKFAST
+3,2017-01-29,536462491,0,kcal: 72 user_provided_unit: KILOCALORIE,piccolo,2425,1,BREAKFAST
+3,2017-02-03,536464351,640,kcal: 111 user_provided_unit: KILOCALORIE,"piccolo (5,5 cm di diametro)",9481,3,LUNCH
+3,2017-02-11,536463438,2,kcal: 222 user_provided_unit: KILOCALORIE,grande,2477,2,BREAKFAST
+30,2016-12-24,532578541,20576,kcal: 102 user_provided_unit: KILOCALORIE,grammo,147,5,BREAKFAST
+300,2017-02-21,696185292,0,kcal: 111 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+300.25,2017-02-08,532572763,0,kcal: 77 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+350,2017-02-11,532572900,0,kcal: 158 user_provided_unit: KILOCALORIE,millilitro,209,1,LUNCH
+4,2017-02-04,536462787,0,kcal: 308 user_provided_unit: KILOCALORIE,striscia o fetta,2439,1,DINNER
+40,2017-02-25,532570930,0,kcal: 174 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+400,2017-02-07,532587265,0,kcal: 384 user_provided_unit: KILOCALORIE,grammo,147,1,BREAKFAST
+400,2017-02-08,532569846,40961,kcal: 463 user_provided_unit: KILOCALORIE,grammo,147,4,LUNCH
+460,2017-02-20,536463061,32768,kcal: 624 user_provided_unit: KILOCALORIE,grammo,147,3,LUNCH
+50,2017-01-10,536462371,0,kcal: 200 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+50,2017-02-11,536464059,0,kcal: 18 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+50,2017-02-19,536462376,134217793,kcal: 170 user_provided_unit: KILOCALORIE,grammo,147,4,BREAKFAST
+54,2016-12-18,536462646,0,kcal: 25 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+80,2017-01-21,699560150,4096,kcal: 395 user_provided_unit: KILOCALORIE,grammo,147,2,BREAKFAST
+80,2017-02-25,532574081,0,kcal: 14 user_provided_unit: KILOCALORIE,grammo,147,2,DINNER
+87,2017-02-26,532571960,0,kcal: 307 user_provided_unit: KILOCALORIE,grammo,147,3,LUNCH
+98.870002746582031,2017-01-10,536462762,0,kcal: 357 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+99.5,2017-01-12,532589658,0,kcal: 35 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+99.660003662109375,2016-12-08,536462500,0,kcal: 259 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+99.75,2017-01-08,536461783,0,kcal: 34 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+99.75,2017-01-22,536463915,0,kcal: 99 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+99.870002746582031,2016-12-16,532584149,0,kcal: 379 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+99.870002746582031,2016-12-28,532576380,0,kcal: 83 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+99.870002746582031,2016-12-28,536461373,0,kcal: 129 user_provided_unit: KILOCALORIE,grammo,147,1,DINNER
+99.870002746582031,2016-12-28,536463305,32768,kcal: 83 user_provided_unit: KILOCALORIE,grammo,147,2,LUNCH
+99.870002746582031,2017-01-27,536465178,0,kcal: 64 user_provided_unit: KILOCALORIE,grammo,147,1,LUNCH
+99.870002746582031,2017-02-04,532571743,0,kcal: 182 user_provided_unit: KILOCALORIE,grammo,147,2,DINNER

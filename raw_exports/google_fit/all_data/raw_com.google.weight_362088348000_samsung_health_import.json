@@ -1,0 +1,12 @@
+{
+    "Data Source": "raw:com.google.weight:362088348000:samsung_health_import",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":85}}],"originDataSourceId":"","endTimeNanos":1746982238000000000,"dataTypeName":"com.google.weight","startTimeNanos":1746982238000000000,"modifiedTimeMillis":1780420876798,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":87}}],"originDataSourceId":"","endTimeNanos":1749500224000000000,"dataTypeName":"com.google.weight","startTimeNanos":1749500224000000000,"modifiedTimeMillis":1780420877220,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":86}}],"originDataSourceId":"","endTimeNanos":1749974185000000000,"dataTypeName":"com.google.weight","startTimeNanos":1749974185000000000,"modifiedTimeMillis":1780420877981,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":88}}],"originDataSourceId":"","endTimeNanos":1762060324000000000,"dataTypeName":"com.google.weight","startTimeNanos":1762060324000000000,"modifiedTimeMillis":1780420878787,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":85}}],"originDataSourceId":"","endTimeNanos":1772116723000000000,"dataTypeName":"com.google.weight","startTimeNanos":1772116723000000000,"modifiedTimeMillis":1780420879085,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":83}}],"originDataSourceId":"","endTimeNanos":1773944532000000000,"dataTypeName":"com.google.weight","startTimeNanos":1773944532000000000,"modifiedTimeMillis":1780420879674,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":85}}],"originDataSourceId":"","endTimeNanos":1774093588000000000,"dataTypeName":"com.google.weight","startTimeNanos":1774093588000000000,"modifiedTimeMillis":1780420879351,"rawTimestampNanos":0}
+    ]
+}

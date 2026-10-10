@@ -1,0 +1,13 @@
+{
+    "Data Source": "derived:com.google.calories.expended:com.google.ios.fit:appleinc.:iphone:com.apple.health.b9d07894-f54b-4348-a99f-d587cce01737:top_level",
+    "Data Points": [
+        {"fitValue":[{"value":{"fpVal":19.97378921508789}}],"originDataSourceId":"","endTimeNanos":1790872011084502272,"dataTypeName":"com.google.calories.expended","startTimeNanos":1790871780321844480,"modifiedTimeMillis":1790900968979,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":20.638713836669922}}],"originDataSourceId":"","endTimeNanos":1790939772026727680,"dataTypeName":"com.google.calories.expended","startTimeNanos":1790939533582018048,"modifiedTimeMillis":1790954234543,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":6.065193176269531}}],"originDataSourceId":"","endTimeNanos":1791206042269279744,"dataTypeName":"com.google.calories.expended","startTimeNanos":1791205973040697600,"modifiedTimeMillis":1791487114985,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":25.386308670043945}}],"originDataSourceId":"","endTimeNanos":1791302622047763712,"dataTypeName":"com.google.calories.expended","startTimeNanos":1791302332286463744,"modifiedTimeMillis":1791487114985,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":5.840662479400635}}],"originDataSourceId":"","endTimeNanos":1791356764032533760,"dataTypeName":"com.google.calories.expended","startTimeNanos":1791356697366759680,"modifiedTimeMillis":1791487114985,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":52.56404495239258}}],"originDataSourceId":"","endTimeNanos":1791456437279030272,"dataTypeName":"com.google.calories.expended","startTimeNanos":1791455837308947968,"modifiedTimeMillis":1791487114985,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":27.40377426147461}}],"originDataSourceId":"","endTimeNanos":1791546057827347200,"dataTypeName":"com.google.calories.expended","startTimeNanos":1791545745038541056,"modifiedTimeMillis":1791553209202,"rawTimestampNanos":0},
+        {"fitValue":[{"value":{"fpVal":62.887901306152344}}],"originDataSourceId":"","endTimeNanos":1791546885873443072,"dataTypeName":"com.google.calories.expended","startTimeNanos":1791546168066093824,"modifiedTimeMillis":1791553209202,"rawTimestampNanos":0}
+    ]
+}
