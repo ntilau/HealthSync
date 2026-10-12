@@ -52,7 +52,13 @@ extension HKQuantitySample {
 extension HKCategorySample {
     func toHealthDataSample() -> HealthDataSample {
         // For sleep analysis, value is 1.0 for asleep, 0.0 for awake
-        let value = self.value == HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue ? 1.0 : 0.0
+        let value: Double
+        if #available(iOS 16.0, *) {
+            value = self.value == HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue ? 1.0 : 0.0
+        } else {
+            // Fallback on earlier versions
+            value = self.value == HKCategoryValueSleepAnalysis.asleep.rawValue ? 1.0 : 0.0
+        }
         return HealthDataSample(
             timestamp: self.startDate,
             value: value,
