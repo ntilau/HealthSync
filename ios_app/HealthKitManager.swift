@@ -1,6 +1,6 @@
 import HealthKit
 
-class HealthKitManager {
+@MainActor class HealthKitManager {
     static let shared = HealthKitManager()
     let healthStore = HKHealthStore()
 

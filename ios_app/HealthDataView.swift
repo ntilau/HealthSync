@@ -6,20 +6,25 @@ struct HealthDataView: View {
 
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                if !HealthKitManager.isHealthKitAvailable() {
-                    VStack {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .font(.largeTitle)
-                            .foregroundColor(.orange)
-                        Text("HealthKit is not available on this device")
-                            .multilineTextAlignment(.center)
-                            .padding()
+            Form {
+                Section {
+                    if !HealthKitManager.isHealthKitAvailable() {
+                        VStack {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .font(.largeTitle)
+                                .foregroundColor(.orange)
+                            Text("HealthKit is not available on this device")
+                                .multilineTextAlignment(.center)
+                                .padding()
+                        }
+                        .padding()
+                    } else {
+                        // Authorization section will go here
                     }
-                    .padding()
-                } else {
-                    Form {
-                        Section(header: Text("Authorization")) {
+                }
+
+                if HealthKitManager.isHealthKitAvailable() {
+                    Section(header: Text("Authorization")) {
                             Button(viewModel.isAuthorized ? "Refresh Authorization" : "Request HealthKit Access") {
                                 viewModel.requestAuthorization()
                             }
@@ -50,7 +55,7 @@ struct HealthDataView: View {
 
                         if !viewModel.fetchedData.isEmpty {
                             Section(header: Text("Fetched Data")) {
-                                ForEach(viewModel.fetchedData.keys.sorted { $0.rawValue < $1.rawValue }, id: \.self) { type in
+                                ForEach(viewModel.fetchedData.keys.sorted(by: { $0.rawValue < $1.rawValue }), id: \.self) { type in
                                     if let samples = viewModel.fetchedData[type], !samples.isEmpty {
                                         DisclosureGroup("\(type.rawValue): \(samples.count) samples") {
                                             Text("First sample: \(formatSample(samples.first!))")
@@ -68,8 +73,8 @@ struct HealthDataView: View {
                                 .buttonStyle(.bordered)
                                 .disabled(viewModel.fetchedData.isEmpty)
 
-                                if let exportMessage = viewModel.exportMessage {
-                                    Text(exportMessage)
+                                if !viewModel.exportMessage.isEmpty {
+                                    Text(viewModel.exportMessage)
                                         .font(.caption)
                                         .foregroundColor(viewModel.exportSuccess ? .green : .red)
                                         .padding(.vertical, 4)
@@ -91,9 +96,8 @@ struct HealthDataView: View {
         let dateString = formatter.string(from: sample.timestamp)
         return "\(dateString): \(sample.value) \(sample.unit)"
     }
-}
 
-class HealthDataViewModel: ObservableObject {
+@MainActor class HealthDataViewModel: ObservableObject {
     @Published var isAuthorized = false
     @Published var authorizationStatus: HKAuthorizationStatus = .notDetermined
     @Published var isFetching = false

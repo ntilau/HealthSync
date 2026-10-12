@@ -1,6 +1,7 @@
 import Foundation
+import HealthKit
 
-class DataExportService {
+@MainActor class DataExportService {
     static let shared = DataExportService()
     private init() {}
 
@@ -20,7 +21,10 @@ class DataExportService {
         // For most types: timestamp,value
         // For sleep analysis: startDate,endDate,value (we'll use timestamp as startDate and approximate endDate)
         for sample in sortedSamples {
-            let timestampString = ISO8601DateFormatter.string(from: sample.timestamp, timeZone: .utc, format: .extended)
+            let formatter = ISO8601DateFormatter()
+            formatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
+            formatter.formatOptions = .withInternetDateTime // equivalent to .extended
+            let timestampString = formatter.string(from: sample.timestamp)
 
             switch type {
             case .sleepAnalysis:
@@ -28,7 +32,7 @@ class DataExportService {
                 // Since we only have timestamp from HealthKit, we'll use it as start
                 // and add a small duration for end (this is a simplification)
                 let endDate = sample.timestamp.addingTimeInterval(300) // 5 minutes later as placeholder
-                let endTimestampString = ISO8601DateFormatter.string(from: endDate, timeZone: .utc, format: .extended)
+                let endTimestampString = formatter.string(from: endDate)
                 csvContent += "\(timestampString),\(endTimestampString),\(Int(sample.value))\n"
             default:
                 csvContent += "\(timestampString),\(sample.value)\n"
@@ -44,20 +48,5 @@ class DataExportService {
         for (type, samples) in dataByType {
             try exportHealthData(samples: samples, type: type, to: directory)
         }
-    }
-}
-
-// MARK: - ISO8601 Date Formatter Extension
-
-extension ISO8601DateFormatter {
-    convenience init(timeZone: TimeZone, format: Options) {
-        self.init()
-        self.timeZone = timeZone
-        self.formatOptions = format
-    }
-
-    static func string(from date: Date, timeZone: TimeZone, format: Options) -> String {
-        let formatter = ISO8601DateFormatter(timeZone: timeZone, format: format)
-        return formatter.string(from: date)
     }
 }

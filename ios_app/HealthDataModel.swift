@@ -21,10 +21,29 @@ struct HealthDataSample {
 
 extension HKQuantitySample {
     func toHealthDataSample() -> HealthDataSample {
+        let unit: HKUnit
+        switch self.quantityType {
+        case HKQuantityType.quantityType(forIdentifier: .stepCount)!:
+            unit = HKUnit.count()
+        case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!:
+            unit = HKUnit.meter()
+        case HKQuantityType.quantityType(forIdentifier: .heartRate)!:
+            unit = HKUnit.init(from: "bpm")
+        case HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!:
+            unit = HKUnit.kilocalorie()
+        case HKQuantityType.quantityType(forIdentifier: .bodyMass)!:
+            unit = HKUnit.gramUnit(with: .kilo)
+        case HKQuantityType.quantityType(forIdentifier: .height)!:
+            unit = HKUnit.meterUnit(with: .centi)
+        default:
+            // For unknown types, we'll use a generic approach - this shouldn't happen with our known types
+            unit = HKUnit.count()
+        }
+
         return HealthDataSample(
             timestamp: self.startDate,
-            value: self.quantity.doubleValue(for: self.quantity.unit),
-            unit: self.quantity.unit.unitString,
+            value: self.quantity.doubleValue(for: unit),
+            unit: unit.unitString,
             metadata: self.metadata
         )
     }
@@ -33,7 +52,7 @@ extension HKQuantitySample {
 extension HKCategorySample {
     func toHealthDataSample() -> HealthDataSample {
         // For sleep analysis, value is 1.0 for asleep, 0.0 for awake
-        let value = self.value == HKCategoryValueSleepAnalysis.asleep.rawValue ? 1.0 : 0.0
+        let value = self.value == HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue ? 1.0 : 0.0
         return HealthDataSample(
             timestamp: self.startDate,
             value: value,
@@ -56,7 +75,7 @@ extension HKUnit {
             return "J"
         case HKUnit.kilocalorie():
             return "kcal"
-        case HKUnit.fromString("bpm"):
+        case HKUnit.init(from: "bpm"):
             return "bpm"
         case HKUnit.gramUnit(with: .kilo):
             return "kg"
@@ -70,7 +89,7 @@ extension HKUnit {
 
 // MARK: - Type Identifiers
 
-enum HealthDataType {
+enum HealthDataType: String {
     case stepCount
     case distance
     case heartRate
